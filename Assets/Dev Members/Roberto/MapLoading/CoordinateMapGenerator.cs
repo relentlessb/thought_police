@@ -44,7 +44,7 @@ public class CoordinateMapGenerator : MonoBehaviour
             connectingRooms.Clear();
 
             //Select Room from Potential Rooms
-            int randomRoomNum = Random.Range(0, potentialRoomCoordinates.Count);
+            int randomRoomNum = Random.Range(0, potentialRoomCoordinates.Count-1);
             (int, int) selectedRoom = potentialRoomCoordinates[randomRoomNum];
             roomCoordinates.Add(selectedRoom);
             potentialRoomCoordinates.Clear();
