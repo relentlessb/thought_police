@@ -52,8 +52,24 @@ public class CoordinateMapGenerator : MonoBehaviour
         return roomCoordinates;
     }
     void Start()
-    { 
-        GenerateRandomMap(amountOfRooms, roomSize);
+    {
+        int amountOfRooms = 10;
+        int roomSize = 5;
+        List<(int, int)> randomMap = GenerateRandomMap(amountOfRooms, roomSize);
+        Dictionary<int, List<(int,int)>> mapPaths = RandomCoordinateConnector.dungeonPathsFromOrigin(randomMap);
+        foreach((int, int) coordinate in randomMap)
+        {
+            Debug.Log("Map Coord: " + coordinate);
+        }
+        int listNumber = 1;
+        foreach(List<(int, int)> path in mapPaths.Values)
+        {
+            foreach ((int, int) coordinate in path)
+            {
+                Debug.Log(listNumber + ": " + coordinate);
+                listNumber++;
+            }
+        }
     }
     public int amountOfRooms;
     public int roomSize;
