@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public static class RandomCoordinateConnector
 {
     public static List<((int, int), (int, int))> dungeonPathsFromOrigin(List<(int, int)> randomMap)
     {
         Dictionary<int, List<(int, int)>> originPaths = new Dictionary<int, List<(int, int)>> { };
-        bool fullyConnected = false;
         int totalPaths = 0;
-        while (fullyConnected == false)
+        for (int i = 0; i < 50; i++)
         {
             bool retry = false;
             List<(int, int)> createdPath = createOriginPath(randomMap);
@@ -30,18 +30,22 @@ public static class RandomCoordinateConnector
                 }
                 if (found == false) { retry = true; break; }
             }
-            if (retry == false) fullyConnected = true;
+            if (retry == false) break;
         }
         //Merge Connection Paths to Door Dictionary
-        List<((int, int), (int, int))> doorConnectionsList = createDoorDictionary(originPaths);
+        List<((int, int), (int, int))> doorConnectionsList = createDoorDictionary(originPaths, randomMap);
         return doorConnectionsList;
     }
     static List<(int, int)> createOriginPath(List<(int, int)> randomMap)
     {
         List<(int, int)> path = new List<(int, int)> { };
-        int direction = UnityEngine.Random.Range(0, 4);
+        bool end = false;
+        path.Add((0, 0));
+        bool checkedX = false;
+        bool checkedY = false;
         int x = 0;
         int y = 0;
+        int direction = UnityEngine.Random.Range(0, 4);
         switch (direction)
         {
             case 0: x = 1; y = 1; break;
@@ -49,10 +53,6 @@ public static class RandomCoordinateConnector
             case 2: x = -1; y = -1; break;
             case 3: x = -1; y = 1; break;
         }
-        bool end = false;
-        path.Add((0, 0));
-        bool checkedX = false;
-        bool checkedY = false;
         while (end == false)
         {
             int item = UnityEngine.Random.Range(0, 2);
@@ -78,7 +78,7 @@ public static class RandomCoordinateConnector
         }
         return path;
     }
-    public static List<((int, int), (int, int))> createDoorDictionary(Dictionary<int, List<(int, int)>> originPaths)
+    public static List<((int, int), (int, int))> createDoorDictionary(Dictionary<int, List<(int, int)>> originPaths, List<(int, int)> randomMap)
     {
         List<((int, int), (int, int))> doorList = new List<((int, int), (int, int))>{};
         foreach(List<(int, int)> path in originPaths.Values)
@@ -93,8 +93,8 @@ public static class RandomCoordinateConnector
                 }
             }
         }
-        doorList = doorList.Distinct().ToList();
         //Delete Unneccessary Connections
+        doorList = doorList.Distinct().ToList();
         List<(int, int)> entryDoors = new List<(int, int)>();
         List<(int, int)> exitDoors = new List<(int, int)>();
         foreach (((int, int), (int, int)) coordinatePair in doorList)
@@ -113,6 +113,37 @@ public static class RandomCoordinateConnector
                 int index = listExitDoorsCopy.IndexOf(coordinate);
                 listEntryDoorsCopy.RemoveAt(index);
                 listExitDoorsCopy.RemoveAt(index);
+            }
+        }
+        //Add last minute connections
+        foreach ((int, int) coordinate in randomMap)
+        {
+            if (!exitDoors.Contains(coordinate))
+            {
+                bool madeConnection = false;
+                while (madeConnection == false)
+                {
+                    int x = 1;
+                    int y = 0;
+                    int checkDirection = UnityEngine.Random.Range(0, 4);
+                    (int, int) checkRoom;
+                    switch (checkDirection)
+                    {
+                        case 0: x = 1; y = 0; break;
+                        case 1: x = 0; y = 1; break;
+                        case 2: x = -1; y = 0; break;
+                        case 3: x = 0; y = -0; break;
+
+
+                    }
+                    checkRoom = (coordinate.Item1 + x, coordinate.Item2 + y);
+                    if (exitDoors.Contains(checkRoom))
+                    {
+                        entryDoors.Add(checkRoom);
+                        exitDoors.Add(coordinate);
+                        madeConnection = true;
+                    }
+                }
             }
         }
         doorList.Clear();
