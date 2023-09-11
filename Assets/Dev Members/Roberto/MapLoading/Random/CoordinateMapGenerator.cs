@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,9 +6,9 @@ using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
-public class CoordinateMapGenerator : MonoBehaviour
+public static class CoordinateMapGenerator
 {
-    private List<(int, int)> GenerateRandomMap(int amountOfRooms, int roomSize)
+    public static List<(int, int)> GenerateRandomMap(int amountOfRooms, int mapSize)
     {
         List<(int, int)> roomCoordinates = new List<(int, int)>
         {
@@ -36,7 +37,7 @@ public class CoordinateMapGenerator : MonoBehaviour
             //Filter Out Rooms Outside of Limit and Already Made Rooms
             foreach ((int, int) room in connectingRooms)
             {
-                if (!roomCoordinates.Contains(room))
+                if (!roomCoordinates.Contains(room) && room.Item1<mapSize && -mapSize<room.Item1 && room.Item2 < mapSize && -mapSize < room.Item2)
                 {
                     potentialRoomCoordinates.Add(room);
                 }
@@ -44,33 +45,11 @@ public class CoordinateMapGenerator : MonoBehaviour
             connectingRooms.Clear();
 
             //Select Room from Potential Rooms
-            int randomRoomNum = Random.Range(0, potentialRoomCoordinates.Count-1);
+            int randomRoomNum = UnityEngine.Random.Range(0, potentialRoomCoordinates.Count-1);
             (int, int) selectedRoom = potentialRoomCoordinates[randomRoomNum];
             roomCoordinates.Add(selectedRoom);
             potentialRoomCoordinates.Clear();
         }
         return roomCoordinates;
     }
-    void Start()
-    {
-        int amountOfRooms = 10;
-        int roomSize = 5;
-        List<(int, int)> randomMap = GenerateRandomMap(amountOfRooms, roomSize);
-        Dictionary<int, List<(int,int)>> mapPaths = RandomCoordinateConnector.dungeonPathsFromOrigin(randomMap);
-        foreach((int, int) coordinate in randomMap)
-        {
-            Debug.Log("Map Coord: " + coordinate);
-        }
-        int listNumber = 1;
-        foreach(List<(int, int)> path in mapPaths.Values)
-        {
-            foreach ((int, int) coordinate in path)
-            {
-                Debug.Log(listNumber + ": " + coordinate);
-                listNumber++;
-            }
-        }
-    }
-    public int amountOfRooms;
-    public int roomSize;
 }
