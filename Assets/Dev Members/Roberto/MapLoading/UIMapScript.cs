@@ -13,7 +13,7 @@ public class UIMapScript : MonoBehaviour
     void Start()
     {
         List<(int, int)> map = sceneHandler.randomMap;
-       // List<((int, int), (int, int))> doorDictionary = sceneHandler.doorDictionary;
+        List<((int, int), (int, int))> doorDictionary;
         float uiRoomScaleX = .1f;
         Vector3 uiRoomScale = new Vector3(uiRoomScaleX, uiRoomScaleX, 1);
         Transform mapPos = this.transform;
@@ -24,13 +24,13 @@ public class UIMapScript : MonoBehaviour
             roomSquare.transform.localPosition = roomPos;
             roomSquare.transform.localScale = uiRoomScale;
         }
-      //  foreach (((int,int),(int,int)) coordinatePair in doorDictionary)
+        foreach (((int,int),(int,int)) coordinatePair in doorDictionary)
         {
             Vector3 uiConnectionScale = new Vector3(.04f,.3f,1);
             GameObject roomSquare = Instantiate(uiRoomConnection, transform.parent = mapPos);
-          //  Vector3 connectionPos = new Vector3(((coordinatePair.Item2.Item1+coordinatePair.Item1.Item1)/2f)/descale, ((coordinatePair.Item2.Item2+coordinatePair.Item1.Item2)/2f)/descale, 1);
-            //roomSquare.transform.localPosition = connectionPos;
-            //if (coordinatePair.Item1.Item1 != coordinatePair.Item2.Item1)
+            Vector3 connectionPos = new Vector3(((coordinatePair.Item2.Item1+coordinatePair.Item1.Item1)/2f)/descale, ((coordinatePair.Item2.Item2+coordinatePair.Item1.Item2)/2f)/descale, 1);
+            roomSquare.transform.localPosition = connectionPos;
+            if (coordinatePair.Item1.Item1 != coordinatePair.Item2.Item1)
             {
                 uiConnectionScale = new Vector3(.3f, .04f, 1);
             }

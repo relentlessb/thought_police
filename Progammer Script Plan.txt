@@ -1,0 +1,12 @@
+Main Scripts:
+
+MainCharacterHandler: Change characters, remember character changes throughout dungeons, calculate character attributes, apply ability information to characters, and load player.
+SceneHandler: Change scenes using a dungeon map, display UI map data, display Visual Novel dialogue, and load cutscenes.
+SaveHandler: Store dungeon progress, game progression progress, cumulative player stats, and other essential save data.
+
+MainCharacterHandler Scripts:
+
+CharacterStorage: One for each playable character containing gained abilities in dungeons, access cumulative stat increases, and other base character information.
+Character Switcher: Load Characterstorage files during dungeon gameplay.
+AbilityHandler: Remember all abilties gained in dungeon and which character gained them.
+
