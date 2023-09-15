@@ -9,15 +9,16 @@ public class UIMapScript : MonoBehaviour
     public GameObject uiRoomSquare;
     public GameObject uiRoomConnection;
     public float descale;
-    public DungeonSceneHandler sceneHandler;
+    public int amountOfRooms;
+    public int mapSize;
     void Start()
     {
-        List<(int, int)> map = sceneHandler.randomMap;
-        List<((int, int), (int, int))> doorDictionary;
+        List<(int, int)> randomMap = CoordinateMapGenerator.GenerateRandomMap(amountOfRooms, mapSize);
+        List<((int, int), (int, int))> doorDictionary = RandomCoordinateConnector.dungeonPathsFromOrigin(randomMap);
         float uiRoomScaleX = .1f;
         Vector3 uiRoomScale = new Vector3(uiRoomScaleX, uiRoomScaleX, 1);
         Transform mapPos = this.transform;
-        foreach ((int, int) room in map)
+        foreach ((int, int) room in randomMap)
         {
             Vector3 roomPos = new Vector3(room.Item1/descale, room.Item2/descale, 1);
             GameObject roomSquare = Instantiate(uiRoomSquare, transform.parent = mapPos);
