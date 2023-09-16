@@ -1940,7 +1940,7 @@ Tilemap:
       m_TileIndex: 8
       m_TileSpriteIndex: 20
       m_TileMatrixIndex: 0
-      m_TileColorIndex: 10
+      m_TileColorIndex: 16
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741827
@@ -2561,20 +2561,20 @@ Tilemap:
     m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
   - m_RefCount: 0
     m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
+  - m_RefCount: 0
+    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
+  - m_RefCount: 0
+    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
+  - m_RefCount: 0
+    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
+  - m_RefCount: 0
+    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
+  - m_RefCount: 0
+    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
+  - m_RefCount: 0
+    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
   - m_RefCount: 1
     m_Data: {r: 0.8739446, g: 0.35603696, b: 0.37884054, a: 1}
-  - m_RefCount: 0
-    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
-  - m_RefCount: 0
-    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
-  - m_RefCount: 0
-    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
-  - m_RefCount: 0
-    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
-  - m_RefCount: 0
-    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
-  - m_RefCount: 0
-    m_Data: {r: 3.6582e-41, g: 3.6582e-41, b: 3.6582e-41, a: 3.6582e-41}
   - m_RefCount: 219
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
