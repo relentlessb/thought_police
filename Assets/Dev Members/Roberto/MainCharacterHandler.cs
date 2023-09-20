@@ -1,47 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MainCharacterHandler : MonoBehaviour
 {
     //Switch Character Functionality
-    //Create Player Instance
-    //Character Attributes and Abilities
-
-    //Calculate Current Stats
-    public Dictionary<string, int> calculatePlayerStats(int character, List<int> gainedAbilities)
+    public int character;
+    public void switchCharacter(int character, Dictionary<string, float> stats)
     {
-        Dictionary<string, int> currentPlayerAttributes = new Dictionary<string, int>();
-        //Calculate Stats
-        int determination = 0;
-        int confidence = 0;
-        int wit = 0;
-        int morale = 0;
-        int focus = 0;
-        currentPlayerAttributes.Add("Determination", determination);
-        currentPlayerAttributes.Add("Confidence", confidence);
-        currentPlayerAttributes.Add("Wit", wit);
-        currentPlayerAttributes.Add("Morale", morale);
-        currentPlayerAttributes.Add("Focus", focus);
 
-        return currentPlayerAttributes;
     }
-    public Dictionary<string, int> calculateWeaponStats(int weapon, List<int> gainedAbilities)
+    void Start()
     {
-        Dictionary<string, int> currentWeaponAttributes = new Dictionary<string, int>();
-        //Calculate Stats
-        int damage = 0;
-        int size = 0;
-        int offsetX = 0;
-        int offsetY = 0;
-        int speed = 0;
-        currentWeaponAttributes.Add("Damage", damage);
-        currentWeaponAttributes.Add("Size", size);
-        currentWeaponAttributes.Add("Offset X", offsetX);
-        currentWeaponAttributes.Add("Offset Y", offsetY);
-        currentWeaponAttributes.Add("Speed", speed);
-
-        return currentWeaponAttributes;
+        //Initial Character Attributes and Abilities
+        Dictionary<string, float> pathosStats = new Dictionary<string, float>()
+        {
+            { "Determination", 3 },
+            { "Confidence", 5 },
+            { "Wit", 3},
+            { "Morale", 0 },
+            { "Focus", 0 },
+            { "Damage", 5 },
+            { "Size", 1 },
+            { "Offset X", 0 },
+            { "Offset Y", 0 },
+            { "Speed", 1 }
+        };
+        instantiatePlayer(pathosStats);
+    }
+    //Create Player Instance
+    Player player;
+    public Player basePlayer;
+    void instantiatePlayer(Dictionary<string, float> defaultStats)
+    {
+        player = Instantiate(basePlayer, transform.parent = this.transform);
+        player.currentStats = defaultStats;
+        
+    }
+    public void addStats(Dictionary<string,float> addedStats, Dictionary<string, float> currentStats)
+    {
+        Debug.Log("Adding Stats");
+        foreach(string statName in currentStats.Keys.ToList())
+        {
+            //Calculate Current Attributes
+            if (addedStats.Keys.Contains(statName))
+            {
+                currentStats[statName] += addedStats[statName];
+            }
+        }
     }
 }
