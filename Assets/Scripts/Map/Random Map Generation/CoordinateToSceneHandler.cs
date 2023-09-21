@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CoordinateToSceneHandler
 {
-    public static Dictionary<(int, int), string> loadRandomGeneratedMap(List<(int, int)> coordinateMap, int dungeon)
+    public static Dictionary<(int, int), string> loadRandomGeneratedMap(List<(int, int)> coordinateMap)
     {
         List<string> all = RandomRooms.allDirPossible;
         List<string> allButNorth = ((List<string>)RandomRooms.allDirButNorthPossible.Concat(all));

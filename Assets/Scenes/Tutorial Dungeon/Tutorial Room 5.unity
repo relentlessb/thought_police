@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 20238168}
   - component: {fileID: 20238170}
   - component: {fileID: 20238169}
-  - component: {fileID: 20238171}
   m_Layer: 0
   m_Name: Lab_Ground
   m_TagString: RoomTilemap
@@ -2602,19 +2601,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &20238171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 20238167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 254087b36d5ff844da59c42aaa4d6cc2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomSize: {x: 0, y: 0, z: 0}
 --- !u!1001 &137323131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3630,7 +3616,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1875053529
+--- !u!1001 &2110568692
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2

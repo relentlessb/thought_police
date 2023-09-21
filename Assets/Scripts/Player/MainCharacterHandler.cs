@@ -34,10 +34,18 @@ public class MainCharacterHandler : MonoBehaviour
     //Create Player Instance
     Player player;
     public Player basePlayer;
+    public Dictionary<(int, int), string> sceneMap;
+    public (int, int) currentPos;
+    public List<GameObject> doorList;
+    public List<((int, int), (int, int))> doorDictionary;
     void instantiatePlayer(Dictionary<string, float> defaultStats)
     {
         player = Instantiate(basePlayer, transform.parent = this.transform);
         player.currentStats = defaultStats;
+        player.currentPos = currentPos;
+        player.sceneMap= sceneMap;
+        player.doorList = doorList;
+        player.doorDictionary = doorDictionary;
         
     }
     public void addStats(Dictionary<string,float> addedStats, Dictionary<string, float> currentStats)
