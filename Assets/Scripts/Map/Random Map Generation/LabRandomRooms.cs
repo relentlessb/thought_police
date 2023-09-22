@@ -30,7 +30,7 @@ public static class LabRandomRooms
     };
     public static List<string> northAndEastEntrancePossible = new List<string>
     {
-        "Room1"
+        "LabEnv 5"
     };
     public static List<string> southandWestEntrancePossible = new List<string>
     {
@@ -42,15 +42,15 @@ public static class LabRandomRooms
     };
     public static List<string> eastAndWestEntrancePossible = new List<string>
     {
-        "Room1"
+        "LabEnv 2"
     };
     public static List<string> allDirButWestPossible = new List<string>
     {
-        "Room1"
+        "LabEnv 1"
     };
     public static List<string> allDirButEastPossible = new List<string>
     {
-        "LabEnv 1"
+        "LabEnv 4"
     };
     public static List<string> allDirButNorthPossible = new List<string>
     {
