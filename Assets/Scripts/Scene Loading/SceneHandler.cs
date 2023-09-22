@@ -96,5 +96,19 @@ public class SceneHandler : MonoBehaviour
                 }
             }
         }
+        Tilemap tilemap = GameObject.FindWithTag("RoomTilemap").GetComponent<Tilemap>();
+        tilemap.CompressBounds();
+        float roomSizeX = tilemap.size.x;
+        float roomSizeY = tilemap.size.y;
+        foreach(GameObject door in doorList)
+        {
+            switch (door.name)
+            {
+                case "North Door": door.transform.position = new Vector3(0, roomSizeY / 2 - 1, 0); break;
+                case "South Door": door.transform.position = new Vector3(0, -(roomSizeY / 2) + 1, 0); break;
+                case "East Door": door.transform.position = new Vector3(-(roomSizeX / 2) + 1, 0, 0); break;
+                case "West Door": door.transform.position = new Vector3(roomSizeX / 2 - 1, 0, 0); break;
+            }
+        }
     }
 }

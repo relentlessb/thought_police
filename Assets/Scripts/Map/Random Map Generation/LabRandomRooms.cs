@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class RandomRooms 
+public static class LabRandomRooms 
 {
     public static List<string> northEntrancePossible = new List<string>
     {
@@ -50,7 +50,7 @@ public static class RandomRooms
     };
     public static List<string> allDirButEastPossible = new List<string>
     {
-        "Room1"
+        "LabEnv 1"
     };
     public static List<string> allDirButNorthPossible = new List<string>
     {

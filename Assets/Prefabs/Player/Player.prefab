@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2768591272447789614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.7219257, y: -0.5560601, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -3.7219257, y: -0.1944, z: 0}
+  m_LocalScale: {x: 0.9, y: 1.7232, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 54233c2b9f6858b4297eb8a2fead3cec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneHandler: {fileID: 2148190347929966501, guid: 285f027117f003e44a4005851ff05342, type: 3}
+  doorList: []
   touchedDoor:
     m_PersistentCalls:
       m_Calls:
@@ -115,6 +116,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  cameraObject: {fileID: 3799667235527351572, guid: 77085cdf887b64e4392879932699a083, type: 3}
+  doorEnterDistance: 2
+  startCharSwitch:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3814835662910060153, guid: d0ce1329c4c95244dbccdc83d9d7f168, type: 3}
+        m_TargetAssemblyTypeName: MainCharacterHandler, Assembly-CSharp
+        m_MethodName: switchCharacter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  charSprites: []
   currentChar: 0
 --- !u!50 &-7593683554636853742
 Rigidbody2D:
@@ -136,7 +155,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &-4357877915688274298
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -150,7 +169,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.00000011920929, y: -0.2720833}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -161,5 +180,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.0202067, y: 0.5296908}
   m_EdgeRadius: 0
