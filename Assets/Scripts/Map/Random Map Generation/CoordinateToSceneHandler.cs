@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class CoordinateToSceneHandler
 {
-    public static Dictionary<(int, int), string> loadRandomGeneratedMap(List<(int, int)> coordinateMap, int dungeon)
+    public static Dictionary<(int, int), string> loadRandomGeneratedMap(List<(int, int)> coordinateMap)
     {
-        List<string> all = RandomRooms.allDirPossible;
-        List<string> allButNorth = ((List<string>)RandomRooms.allDirButNorthPossible.Concat(all));
-        List<string> allButSouth = ((List<string>)RandomRooms.allDirButSouthPossible.Concat(all));
-        List<string> allButEast = ((List<string>)RandomRooms.allDirButEastPossible.Concat(all));
-        List<string> allButWest = ((List<string>)RandomRooms.allDirButWestPossible.Concat(all));
-        List<string> NAndE = ((List<string>)RandomRooms.northAndEastEntrancePossible.Concat(allButSouth));
-        List<string> NAndW = ((List<string>)RandomRooms.northAndWestEntrancePossible.Concat(allButEast));
-        List<string> NAndS = ((List<string>)RandomRooms.northAndSouthEntrancePossible.Concat(allButWest));
-        List<string> SAndE = ((List<string>) RandomRooms.southAndEastEntrancePossible.Concat(allButNorth));
-        List<string> SAndW = ((List<string>)RandomRooms.southandWestEntrancePossible.Concat(allButEast));
-        List<string> EAndW = ((List<string>)RandomRooms.eastAndWestEntrancePossible.Concat(allButSouth));
-        List<string> northEnts = ((List<string>)RandomRooms.northEntrancePossible.Concat(NAndE));
-        List<string> southEnts = ((List<string>)RandomRooms.southEntrancePossible.Concat(SAndW));
-        List<string> eastEnts = ((List<string>)RandomRooms.eastEntrancePossible.Concat(EAndW));
-        List<string> westEnts = ((List<string>)RandomRooms.westEntrancePossible.Concat(NAndW));
+        List<string> all = LabRandomRooms.allDirPossible;
+        List<string> allButNorth = ((List<string>)LabRandomRooms.allDirButNorthPossible.Concat(all));
+        List<string> allButSouth = ((List<string>)LabRandomRooms.allDirButSouthPossible.Concat(all));
+        List<string> allButEast = ((List<string>)LabRandomRooms.allDirButEastPossible.Concat(all));
+        List<string> allButWest = ((List<string>)LabRandomRooms.allDirButWestPossible.Concat(all));
+        List<string> NAndE = ((List<string>)LabRandomRooms.northAndEastEntrancePossible.Concat(allButSouth));
+        List<string> NAndW = ((List<string>)LabRandomRooms.northAndWestEntrancePossible.Concat(allButEast));
+        List<string> NAndS = ((List<string>)LabRandomRooms.northAndSouthEntrancePossible.Concat(allButWest));
+        List<string> SAndE = ((List<string>) LabRandomRooms.southAndEastEntrancePossible.Concat(allButNorth));
+        List<string> SAndW = ((List<string>)LabRandomRooms.southandWestEntrancePossible.Concat(allButEast));
+        List<string> EAndW = ((List<string>)LabRandomRooms.eastAndWestEntrancePossible.Concat(allButSouth));
+        List<string> northEnts = ((List<string>)LabRandomRooms.northEntrancePossible.Concat(NAndE));
+        List<string> southEnts = ((List<string>)LabRandomRooms.southEntrancePossible.Concat(SAndW));
+        List<string> eastEnts = ((List<string>)LabRandomRooms.eastEntrancePossible.Concat(EAndW));
+        List<string> westEnts = ((List<string>)LabRandomRooms.westEntrancePossible.Concat(NAndW));
 
 
         Dictionary<(int, int), string> sceneMap = new Dictionary<(int, int), string>();
