@@ -23,11 +23,17 @@ public class Player : MonoBehaviour
     Rigidbody2D playerPhys;
     public List<Dictionary<string, float>> charStats;
     public List<Sprite> charSprites;
+    [SerializeField] GameObject weapon;
+    GameObject straightSword;
+    [SerializeField] GameObject weaponAngleObject;
+    GameObject weaponAngleObj;
 
     private void Start()
     {
         playerPhys = gameObject.GetComponent<Rigidbody2D>();
         MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
+        weaponAngleObj = Instantiate(weaponAngleObject, transform.parent = this.transform);
+        straightSword = Instantiate(weapon, transform.parent = weaponAngleObj.transform);
         objectSprite = gameObject.GetComponent<SpriteRenderer>();
         currentStats = new Dictionary<string, float>()
         {
