@@ -6,27 +6,28 @@ public static class LabRandomRooms
 {
     public static List<string> northEntrancePossible = new List<string>
     {
-        "Room1"
+        "LabEnv 9"
     };
     public static List<string> southEntrancePossible = new List<string>
     {
-        "Room1"
+        "LabEnv 30"
     };
     public static List<string> eastEntrancePossible = new List<string>
     {
-        "Lab Env 6"
+        "LabEnv 6"
     };
     public static List<string> westEntrancePossible = new List<string>
     {
-        "Room1"
+        "LabEnv 29"
     };
     public static List<string> northAndSouthEntrancePossible = new List<string>
     {
-        "LabEnv 8"
+        "LabEnv 8",
+        "LabEnv 11"
     };
     public static List<string> northAndWestEntrancePossible = new List<string>
     {
-        "Room1"
+        "LabEnv 28"
     };
     public static List<string> northAndEastEntrancePossible = new List<string>
     {
@@ -38,7 +39,8 @@ public static class LabRandomRooms
     };
     public static List<string> southAndEastEntrancePossible = new List<string>
     {
-        "Room1"
+        "LabEnv 27",
+        "LabEnv 10"
     };
     public static List<string> eastAndWestEntrancePossible = new List<string>
     {
@@ -54,14 +56,14 @@ public static class LabRandomRooms
     };
     public static List<string> allDirButNorthPossible = new List<string>
     {
-        "Room1"
+        "LabEnv 25"
     };
     public static List<string> allDirButSouthPossible = new List<string>
     {
-        "Room1"
+        "LabEnv 24"
     };
     public static List<string> allDirPossible = new List<string>
     {
-        "Room1"
+        "LabEnv 26"
     };
 }

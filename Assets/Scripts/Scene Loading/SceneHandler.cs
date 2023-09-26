@@ -1,22 +1,35 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
-using UnityEngine.Events;
 
 public class SceneHandler : MonoBehaviour
 {
-    List<GameObject> doorList = new List<GameObject>();
-    public Dictionary<(int, int), string> sceneMap;
-    List<((int, int), (int, int))> doorDictionary;
-    [SerializeField] GameObject door;
-    [SerializeField] MainCharacterHandler characterHandler;
-    [SerializeField] Player player;
+    public List<GameObject> doorList = new List<GameObject>();
+    public GameObject door;
+    public MainCharacterHandler characterHandler;
+    public Player player;
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        StartPremadeDungeon(0, sceneMap, doorDictionary, door, doorList, characterHandler, player);
+        createRandomDungeon(door, doorList,characterHandler, player);
+    }
+    void createRandomDungeon(GameObject door, List<GameObject> doorList, MainCharacterHandler characterHandler, Player player)
+    {
+        List<(int,int)> randomMap = CoordinateMapGenerator.GenerateRandomMap(10,5);
+        List<((int, int), (int, int))>  doorDictionary = RandomCoordinateConnector.dungeonPathsFromOrigin(randomMap);
+        Dictionary<(int, int), string>  sceneMap = CoordinateToSceneHandler.loadRandomGeneratedMap(randomMap);
+        CreateDirDoors(door, doorList);
+        LoadNextScene(sceneMap[(0, 0)], doorList);
+        (int, int) startPos = (0, 0);
+        MainCharacterHandler characterHandlerObject = Instantiate(characterHandler);
+        characterHandlerObject.sceneMap = sceneMap;
+        characterHandlerObject.currentPos = startPos;
+        characterHandlerObject.doorList = doorList;
+        characterHandlerObject.doorDictionary = doorDictionary;
+        DontDestroyOnLoad(characterHandlerObject);
+        activateRoomDoors(doorDictionary, startPos, doorList);
+
     }
     void StartPremadeDungeon(int dungeonNum, Dictionary<(int, int), string> sceneMap, List<((int, int), (int, int))> doorDictionary, GameObject door, List<GameObject> doorList, MainCharacterHandler characterHandler, Player player)
     {
@@ -27,13 +40,13 @@ public class SceneHandler : MonoBehaviour
         CreateDirDoors(door, doorList);
         LoadNextScene(sceneMap[(0, 0)], doorList);
         (int, int) startPos = (0, 0);
-        activateRoomDoors(doorDictionary, startPos, doorList);
         MainCharacterHandler characterHandlerObject = Instantiate(characterHandler);
         characterHandlerObject.sceneMap = sceneMap;
         characterHandlerObject.currentPos = startPos;
         characterHandlerObject.doorList = doorList;
         characterHandlerObject.doorDictionary = doorDictionary;
         DontDestroyOnLoad(characterHandlerObject);
+        activateRoomDoors(doorDictionary, startPos, doorList);
     }
     void LoadNextScene(string sceneName, List<GameObject> doorList)
     {
@@ -49,17 +62,13 @@ public class SceneHandler : MonoBehaviour
         {
             GameObject newDoor = Instantiate(door);
             DontDestroyOnLoad(newDoor);
-            Tilemap tilemap = GameObject.FindWithTag("RoomTilemap").GetComponent<Tilemap>();
-            tilemap.CompressBounds();
-            float roomSizeX = tilemap.size.x;
-            float roomSizeY = tilemap.size.y;
             doorList.Add(newDoor);
             switch (i)
             {
-                case 0: newDoor.name = "North Door"; newDoor.transform.position = new Vector3(0, roomSizeY / 2 - 1, 0); break;
-                case 1: newDoor.name = "South Door"; newDoor.transform.position = new Vector3(0, -(roomSizeY / 2) + 1, 0); break;
-                case 2: newDoor.name = "East Door"; newDoor.transform.position = new Vector3(-(roomSizeX / 2) + 1, 0, 0); break;
-                case 3: newDoor.name = "West Door"; newDoor.transform.position = new Vector3(roomSizeX / 2 - 1, 0, 0); break;
+                case 0: newDoor.name = "North Door"; break;
+                case 1: newDoor.name = "South Door"; break;
+                case 2: newDoor.name = "East Door"; break;
+                case 3: newDoor.name = "West Door"; break;
             }
         }
     }
@@ -104,10 +113,10 @@ public class SceneHandler : MonoBehaviour
         {
             switch (door.name)
             {
-                case "North Door": door.transform.position = new Vector3(0, roomSizeY / 2 - 1, 0); break;
-                case "South Door": door.transform.position = new Vector3(0, -(roomSizeY / 2) + 1, 0); break;
-                case "East Door": door.transform.position = new Vector3(-(roomSizeX / 2) + 1, 0, 0); break;
-                case "West Door": door.transform.position = new Vector3(roomSizeX / 2 - 1, 0, 0); break;
+                case "North Door": door.transform.position = new Vector3(0, roomSizeY / 2 - .25f, 0); break;
+                case "South Door": door.transform.position = new Vector3(0, -(roomSizeY / 2) + .5f, 0); break;
+                case "East Door": door.transform.position = new Vector3(-(roomSizeX / 2) + .25f, 0, 0); break;
+                case "West Door": door.transform.position = new Vector3(roomSizeX / 2 - .25f, 0, 0); break;
             }
         }
     }

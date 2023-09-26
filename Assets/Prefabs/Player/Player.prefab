@@ -100,12 +100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9b0c1ee0157414ba8b8de73347ee7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneHandler: {fileID: 2148190347929966501, guid: 285f027117f003e44a4005851ff05342, type: 3}
+  sceneHandler: {fileID: 2148190347929966501, guid: 248091f70c6fedb4282f52d275a67a6d, type: 3}
   doorList: []
   touchedDoor:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2148190347929966501, guid: 285f027117f003e44a4005851ff05342, type: 3}
+      - m_Target: {fileID: 2148190347929966501, guid: 248091f70c6fedb4282f52d275a67a6d, type: 3}
         m_TargetAssemblyTypeName: SceneHandler, Assembly-CSharp
         m_MethodName: getDoorScene
         m_Mode: 0
@@ -136,6 +136,7 @@ MonoBehaviour:
         m_CallState: 2
   charSprites: []
   weapon: {fileID: 1816716132987491196, guid: c3dde9aebbb3b804dbf045229bad6b1b, type: 3}
+  map: {fileID: 1185870457280682269, guid: 6558b12ccb94d7c43b6a90037c2ce4f1, type: 3}
   weaponAngleObject: {fileID: 5024226607108352178, guid: 929911609b8f72b429a1b662d2be3453, type: 3}
   currentChar: 0
 --- !u!50 &-7593683554636853742
@@ -197,7 +198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a7a2c580a54fc4d98f341bd247184d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doorTransform: {fileID: 0}
   doorLayerMask:
     serializedVersion: 2
     m_Bits: 64

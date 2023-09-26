@@ -15,7 +15,6 @@ public class DoorVisibility : MonoBehaviour
     {
         if (e.hitDoor)
         {
-            Debug.Log("SphereCast Hitting door");
             Hide();
             Invoke(nameof(Show), 2f);
         }
