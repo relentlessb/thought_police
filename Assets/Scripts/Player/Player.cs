@@ -23,11 +23,23 @@ public class Player : MonoBehaviour
     Rigidbody2D playerPhys;
     public List<Dictionary<string, float>> charStats;
     public List<Sprite> charSprites;
+    [SerializeField] GameObject weapon;
+    [SerializeField] UIMapHandler map;
+    UIMapHandler mapObj;
+    GameObject straightSword;
+    [SerializeField] GameObject weaponAngleObject;
+    GameObject weaponAngleObj;
 
     private void Start()
     {
         playerPhys = gameObject.GetComponent<Rigidbody2D>();
         MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
+        weaponAngleObj = Instantiate(weaponAngleObject, transform.parent = this.transform);
+        mapObj = Instantiate(map, transform.parent=this.transform);
+        mapObj.sceneMap = sceneMap;
+        mapObj.currentPos = currentPos;
+        mapObj.updateMap = true;
+        straightSword = Instantiate(weapon, transform.parent = weaponAngleObj.transform);
         objectSprite = gameObject.GetComponent<SpriteRenderer>();
         currentStats = new Dictionary<string, float>()
         {
@@ -94,11 +106,13 @@ public class Player : MonoBehaviour
                         case "East Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2);  break;
                         case "West Door": currentPos = (currentPos.Item1 + 1, currentPos.Item2); break;
                     }
+                    mapObj.currentPos = currentPos;
+                    mapObj.updateMap = true;
                     touchedDoor.Invoke(doorDictionary, sceneMap, currentPos, doorList);
                     switch (other.gameObject.name)
                     {
-                        case "North Door": newPosition = new Vector3(transform.position.x, doorList[1].transform.position.y - doorEnterDistance); break;
-                        case "South Door": newPosition = new Vector3(transform.position.x, doorList[0].transform.position.y + doorEnterDistance); break;
+                        case "North Door": newPosition = new Vector3(transform.position.x, doorList[1].transform.position.y + doorEnterDistance); break;
+                        case "South Door": newPosition = new Vector3(transform.position.x, doorList[0].transform.position.y - doorEnterDistance); break;
                         case "East Door": newPosition = new Vector3(doorList[3].transform.position.x - doorEnterDistance, transform.position.y); break;
                         case "West Door": newPosition = new Vector3(doorList[2].transform.position.x + doorEnterDistance, transform.position.y); break;
                     }

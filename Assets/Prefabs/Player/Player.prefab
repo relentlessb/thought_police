@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 460661786136669658}
   - component: {fileID: -7593683554636853742}
   - component: {fileID: -4357877915688274298}
+  - component: {fileID: -869470552370170534}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -28,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2768591272447789614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.7219257, y: -0.1944, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.9, y: 1.7232, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -99,12 +100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9b0c1ee0157414ba8b8de73347ee7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneHandler: {fileID: 2148190347929966501, guid: 285f027117f003e44a4005851ff05342, type: 3}
+  sceneHandler: {fileID: 2148190347929966501, guid: 248091f70c6fedb4282f52d275a67a6d, type: 3}
   doorList: []
   touchedDoor:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2148190347929966501, guid: 285f027117f003e44a4005851ff05342, type: 3}
+      - m_Target: {fileID: 2148190347929966501, guid: 248091f70c6fedb4282f52d275a67a6d, type: 3}
         m_TargetAssemblyTypeName: SceneHandler, Assembly-CSharp
         m_MethodName: getDoorScene
         m_Mode: 0
@@ -134,6 +135,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   charSprites: []
+  weapon: {fileID: 1816716132987491196, guid: c3dde9aebbb3b804dbf045229bad6b1b, type: 3}
+  map: {fileID: 1185870457280682269, guid: 6558b12ccb94d7c43b6a90037c2ce4f1, type: 3}
+  weaponAngleObject: {fileID: 5024226607108352178, guid: 929911609b8f72b429a1b662d2be3453, type: 3}
   currentChar: 0
 --- !u!50 &-7593683554636853742
 Rigidbody2D:
@@ -182,3 +186,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0202067, y: 0.5296908}
   m_EdgeRadius: 0
+--- !u!114 &-869470552370170534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2768591272447789614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a7a2c580a54fc4d98f341bd247184d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
