@@ -4,28 +4,13 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField] PlayerToDoorAngle playerToDoorAngle;
-    private void Start()
+    public IEnumerator ShowDoor()
     {
-        playerToDoorAngle.OnPlayerHitDoor += PlayerToDoorAngle_OnPlayerHitDoor;
-    }
-
-    private void PlayerToDoorAngle_OnPlayerHitDoor(object sender, PlayerToDoorAngle.OnPlayerHitDoorEventArgs e)
-    {
-        if (e.hitDoor)
-        {
-            Debug.Log("SphereCast Hitting door");
-            Hide();
-            Invoke(nameof(Show), 2f);
-        }
-    }
-
-   private void Show()
-    {
+        yield return new WaitForSeconds(1.0F);
         gameObject.SetActive(true);
     }
 
-    private void Hide()
+    public void HideDoor()
     {
         gameObject.SetActive(false);
     }
