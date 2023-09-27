@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class CoordinateToSceneHandler
 {
-    public static Dictionary<(int, int), string> loadRandomGeneratedMap(List<(int, int)> coordinateMap, int dungeon)
+    public static Dictionary<(int, int), string> loadRandomGeneratedMap(List<(int, int)> coordinateMap)
     {
-        List<string> all = RandomRooms.allDirPossible;
-        List<string> allButNorth = ((List<string>)RandomRooms.allDirButNorthPossible.Concat(all));
-        List<string> allButSouth = ((List<string>)RandomRooms.allDirButSouthPossible.Concat(all));
-        List<string> allButEast = ((List<string>)RandomRooms.allDirButEastPossible.Concat(all));
-        List<string> allButWest = ((List<string>)RandomRooms.allDirButWestPossible.Concat(all));
-        List<string> NAndE = ((List<string>)RandomRooms.northAndEastEntrancePossible.Concat(allButSouth));
-        List<string> NAndW = ((List<string>)RandomRooms.northAndWestEntrancePossible.Concat(allButEast));
-        List<string> NAndS = ((List<string>)RandomRooms.northAndSouthEntrancePossible.Concat(allButWest));
-        List<string> SAndE = ((List<string>) RandomRooms.southAndEastEntrancePossible.Concat(allButNorth));
-        List<string> SAndW = ((List<string>)RandomRooms.southandWestEntrancePossible.Concat(allButEast));
-        List<string> EAndW = ((List<string>)RandomRooms.eastAndWestEntrancePossible.Concat(allButSouth));
-        List<string> northEnts = ((List<string>)RandomRooms.northEntrancePossible.Concat(NAndE));
-        List<string> southEnts = ((List<string>)RandomRooms.southEntrancePossible.Concat(SAndW));
-        List<string> eastEnts = ((List<string>)RandomRooms.eastEntrancePossible.Concat(EAndW));
-        List<string> westEnts = ((List<string>)RandomRooms.westEntrancePossible.Concat(NAndW));
+        List<string> all = LabRandomRooms.allDirPossible;
+        List<string> allButNorth = (List<string>)LabRandomRooms.allDirButNorthPossible; allButNorth.AddRange(all);
+        List<string> allButSouth = (List<string>)LabRandomRooms.allDirButSouthPossible; allButSouth.AddRange(all);
+        List<string> allButEast = (List<string>)LabRandomRooms.allDirButEastPossible; allButEast.AddRange(all);
+        List<string> allButWest = (List<string>)LabRandomRooms.allDirButWestPossible; allButWest.AddRange(all);
+        List<string> NAndE = (List<string>)LabRandomRooms.northAndEastEntrancePossible; NAndE.AddRange(allButSouth);
+        List<string> NAndW = (List<string>)LabRandomRooms.northAndWestEntrancePossible; NAndW.AddRange(allButEast);
+        List<string> NAndS = (List<string>)LabRandomRooms.northAndSouthEntrancePossible; NAndS.AddRange(allButWest);
+        List<string> SAndE = (List<string>)LabRandomRooms.southAndEastEntrancePossible; SAndE.AddRange(allButNorth);
+        List<string> SAndW = (List<string>)LabRandomRooms.southandWestEntrancePossible; SAndW.AddRange(allButEast);
+        List<string> EAndW = (List<string>)LabRandomRooms.eastAndWestEntrancePossible; EAndW.AddRange(allButSouth);
+        List<string> northEnts = (List<string>)LabRandomRooms.northEntrancePossible; northEnts.AddRange(NAndS);
+        List<string> southEnts = (List<string>)LabRandomRooms.southEntrancePossible; southEnts.AddRange(SAndE);
+        List<string> eastEnts = (List<string>)LabRandomRooms.eastEntrancePossible; eastEnts.AddRange(EAndW);
+        List<string> westEnts = (List<string>)LabRandomRooms.westEntrancePossible; westEnts.AddRange(NAndW);
 
 
         Dictionary<(int, int), string> sceneMap = new Dictionary<(int, int), string>();
@@ -55,7 +55,7 @@ public class CoordinateToSceneHandler
                 }
                 (int, int, int, int) roomEntrancesNeeded = (northEntrance, southEntrance, eastEntrance, westEntrance);
 
-                string roomSceneToLoad;
+                string roomSceneToLoad = "LabEnv 26";
                 switch (roomEntrancesNeeded)
                 {
                     case (0, 0, 0, 0): roomSceneToLoad = null; break;
@@ -75,7 +75,7 @@ public class CoordinateToSceneHandler
                     case (1, 0, 1, 0): roomSceneToLoad = NAndE[Random.Range(0, NAndE.Count - 1)]; break;
                     case (0, 1, 0, 1): roomSceneToLoad = SAndW[Random.Range(0, SAndW.Count - 1)]; break;
                 }
-
+                sceneMap.Add(coordinate, roomSceneToLoad);
             }
         }
         return sceneMap;

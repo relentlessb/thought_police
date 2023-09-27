@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - RoomTilemap
+  - Ability
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -12,7 +14,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Door
   - 
   - 
   - 
