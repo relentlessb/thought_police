@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class DoorVisibility : MonoBehaviour
 {
+    [SerializeField] float enableDistance;
+    Transform player;
+    SpriteRenderer sprite;
     private void Start()
     {
-        PlayerDoorTrigger playerDoorTrigger = GameObject.FindWithTag("Player").GetComponent<PlayerDoorTrigger>();
-
-        playerDoorTrigger.OnPlayerHitDoor += PlayerToDoorAngle_OnPlayerHitDoor;
+        sprite = GetComponent<SpriteRenderer>();
     }
-
-    private void PlayerToDoorAngle_OnPlayerHitDoor(object sender, PlayerDoorTrigger.OnPlayerHitDoorEventArgs e)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (e.hitDoor)
+        if(collision.tag == "PlayerDoorTrigger")
         {
-            Hide();
-            Invoke(nameof(Show), 2f);
+            player = collision.gameObject.GetComponent<Transform>();
+            sprite.enabled = false;
         }
     }
-
-   private void Show()
+    private void Update()
     {
-        gameObject.SetActive(true);
-    }
-
-    private void Hide()
-    {
-        gameObject.SetActive(false);
+        if (player!= null && sprite.enabled == false)
+        {
+            if(Vector2.Distance(transform.position, player.position) > enableDistance)
+            {
+                sprite.enabled = true;
+            };
+        }
     }
 }

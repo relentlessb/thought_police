@@ -47,5 +47,5 @@ MonoBehaviour:
   pathosSprite: {fileID: 7482667652216324306, guid: 54233c2b9f6858b4297eb8a2fead3cec, type: 3}
   ethosSprite: {fileID: 7482667652216324306, guid: 5b07416c1cda66840bef9bec5e65e48c, type: 3}
   logosSprite: {fileID: 7482667652216324306, guid: c14f0c92264658a40a3fcf874150b855, type: 3}
-  basePlayer: {fileID: 460661786136669658, guid: 349a4752d189ea544bb74c09d7dcfc4b, type: 3}
+  basePlayer: {fileID: 8639061536495383458, guid: 349a4752d189ea544bb74c09d7dcfc4b, type: 3}
   doorList: []

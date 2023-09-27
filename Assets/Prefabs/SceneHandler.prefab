@@ -47,4 +47,4 @@ MonoBehaviour:
   doorList: []
   door: {fileID: 1213670704514583635, guid: ddaa64c6bb707714fbe7167b5d07c44b, type: 3}
   characterHandler: {fileID: 3814835662910060153, guid: d0ce1329c4c95244dbccdc83d9d7f168, type: 3}
-  player: {fileID: 460661786136669658, guid: 349a4752d189ea544bb74c09d7dcfc4b, type: 3}
+  player: {fileID: 8639061536495383458, guid: 349a4752d189ea544bb74c09d7dcfc4b, type: 3}
