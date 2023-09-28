@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 8639061536495383458}
   - component: {fileID: 6384603725014173024}
   - component: {fileID: 1354898480965263397}
+  - component: {fileID: 6386471485365841822}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -261,6 +262,10 @@ MonoBehaviour:
   weapon: {fileID: 1816716132987491196, guid: c3dde9aebbb3b804dbf045229bad6b1b, type: 3}
   map: {fileID: 1185870457280682269, guid: 6558b12ccb94d7c43b6a90037c2ce4f1, type: 3}
   weaponAngleObject: {fileID: 5024226607108352178, guid: 929911609b8f72b429a1b662d2be3453, type: 3}
+  passiveAbilitiesPathos: []
+  passiveAbilitiesEthos: []
+  passiveAbilitiesLogos: []
+  activeHolder: {fileID: 6386471485365841822}
   currentChar: 0
 --- !u!50 &6384603725014173024
 Rigidbody2D:
@@ -309,3 +314,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0202067, y: 0.5296908}
   m_EdgeRadius: 0
+--- !u!114 &6386471485365841822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8810984187599158617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1001f8a81a453843bcc8ee6086db87e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: {fileID: 11400000, guid: 8292ea4a8a2320246b80c78f45175599, type: 2}
+  key: 32

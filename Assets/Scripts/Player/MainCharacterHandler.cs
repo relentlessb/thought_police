@@ -83,19 +83,7 @@ public class MainCharacterHandler : MonoBehaviour
         player.doorList = doorList;
         player.doorDictionary = doorDictionary;
         player.charStats = charStats;
+        player.charStatsBase = charStats;
         player.charSprites = charSprites;
-        
-    }
-    public void addStats(Dictionary<string,float> addedStats, Dictionary<string, float> currentStats)
-    {
-        Debug.Log("Adding Stats");
-        foreach(string statName in currentStats.Keys.ToList())
-        {
-            //Calculate Current Attributes
-            if (addedStats.Keys.Contains(statName))
-            {
-                currentStats[statName] += addedStats[statName];
-            }
-        }
     }
 }
