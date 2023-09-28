@@ -7,6 +7,9 @@ TagManager:
   - RoomTilemap
   - Ability
   - Door
+  - PlayerDoorTrigger
+  - Enemy
+  - Projectile
   layers:
   - Default
   - TransparentFX

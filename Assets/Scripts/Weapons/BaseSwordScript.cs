@@ -25,6 +25,6 @@ public class BaseSwordScript : MonoBehaviour
     }
     public void hitEnemy(GameObject enemyCollider)
     {
-        Component enemy = enemyCollider.GetComponent<BaseEnemyScript>();
+
     }
 }
