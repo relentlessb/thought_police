@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     public bool canMove = true;
 
     //Map Info
-    List<(int,int)> clearedRooms = new List<(int,int)> ();
+    public List<(int,int)> clearedRooms = new List<(int,int)> ();
     List<(int,int)> enteredRooms= new List<(int,int)> ();
     bool nextRoom = false;
 
@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
         MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
         weaponAngleObj = Instantiate(weaponAngleObject, transform.parent = this.transform);
         healthUI = Instantiate(healthUIObj, transform.parent = this.transform);
-        healthManager.healthBar = healthUI.gameObject.transform.Find("HealthBar").gameObject.GetComponentInChildren<Image>();
+        healthManager.healthBar = healthUI.gameObject.transform.Find("HealthBar").gameObject.transform.Find("HP").GetComponent<Image>();
         mapObj = Instantiate(map, transform.parent=this.transform);
         clearedRooms.Add(currentPos);
         enteredRooms.Add(currentPos);
@@ -97,12 +97,12 @@ public class Player : MonoBehaviour
         if (nextRoom)
         {
             timer += Time.deltaTime;
-            if(spriteLoadTimer*Time.deltaTime-timer < 0)
+            if(spriteLoadTimer*Time.deltaTime-timer < 0 && MainCamera.enabled == false)
             {
                 MainCamera.enabled = true;
                 objectSprite.enabled = true;
-                nextRoom = false;
                 timer = 0;
+                nextRoom= false;
             }
         }
         //Character Swap Code
@@ -159,8 +159,8 @@ public class Player : MonoBehaviour
                     {
                         case "North Door": currentPos = (currentPos.Item1, currentPos.Item2 + 1); break;
                         case "South Door": currentPos = (currentPos.Item1, currentPos.Item2 - 1);  break;
-                        case "East Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2);  break;
-                        case "West Door": currentPos = (currentPos.Item1 + 1, currentPos.Item2); break;
+                        case "East Door": currentPos = (currentPos.Item1 + 1, currentPos.Item2);  break;
+                        case "West Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2); break;
                     }
                     enteredRooms.Add(currentPos);
                     mapObj.currentPos = currentPos;
