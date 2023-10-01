@@ -5,11 +5,11 @@ using UnityEngine;
 public class UIMapHandler : MonoBehaviour
 {
     public GameObject mapRoom;
-    public Dictionary<(int, int), string> sceneMap;
+    public List<(int, int)> enteredRooms;
     public (int, int) currentPos;
     public bool updateMap = false;
     Dictionary<(int, int), GameObject> mapElementList = new Dictionary<(int, int), GameObject>();
-    void GenerateMapElements(GameObject mapRoom, Dictionary<(int,int),GameObject> mapElementList, Dictionary<(int,int), string> sceneMap)
+    void GenerateMapElements(GameObject mapRoom, Dictionary<(int,int),GameObject> mapElementList)
     {
         for (int i = -3; i <= 3; i++)
         {
@@ -29,7 +29,7 @@ public class UIMapHandler : MonoBehaviour
     }
     private void Start()
     {
-        GenerateMapElements(mapRoom, mapElementList, sceneMap);
+        GenerateMapElements(mapRoom, mapElementList);
     }
     private void Update()
     {
@@ -39,7 +39,7 @@ public class UIMapHandler : MonoBehaviour
             {
                 mapElementList[room].SetActive(false);
             }
-            foreach((int,int) room in sceneMap.Keys)
+            foreach((int,int) room in enteredRooms)
             {
                 (int, int) roomToActivate = (room.Item1 - currentPos.Item1, room.Item2 - currentPos.Item2);
                 if (roomToActivate.Item1>=-3&& roomToActivate.Item1 <= 3 && roomToActivate.Item2 >= -3 && roomToActivate.Item2 <= 3 && roomToActivate!=(0,0))

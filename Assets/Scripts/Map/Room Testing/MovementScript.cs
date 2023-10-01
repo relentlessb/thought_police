@@ -20,6 +20,7 @@ public class MovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerPhys.AddForce(Vector2.zero);
         if(movementDisabled == false)
         {
             Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * 5), (Input.GetAxis("Vertical") * 5));
