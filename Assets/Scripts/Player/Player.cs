@@ -1,104 +1,98 @@
-using System;
-using System.CodeDom;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    // scene variables
+    //Player Info
+    [SerializeField] SpriteRenderer objectSprite;
+    [SerializeField] Rigidbody2D playerPhys;
+    [SerializeField] GameObject weapon;
+    [SerializeField] HealthManager healthManager;
+
+    //Stats
+    public Dictionary<string, float> currentStats;
+
+    //Scene
     [SerializeField] SceneHandler sceneHandler;
     public Dictionary<(int, int), string> sceneMap;
+    public (int, int) currentPos;
+    int spriteLoadTimer = 10; //Frames
+    float timer = 0;
 
-    // UI variables
-    [SerializeField] UIMapHandler map;
-    UIMapHandler mapObj;
-
-    // camera variables
-    [SerializeField] Camera cameraObject;
-    Camera MainCamera;
-
-    // door variables
+    //Doors
     public List<GameObject> doorList;
     public List<((int, int), (int, int))> doorDictionary;
-    public int doorEnterDistance;
     [SerializeField] UnityEvent<List<((int, int), (int, int))>, Dictionary<(int, int), string>, (int, int), List<GameObject>> touchedDoor;
+    public float doorEnterDistance;
 
-    // player stat variables
-    public Dictionary<string, float> currentStats;
+    //Children Objects
+    [SerializeField] Camera cameraObject;
+    Camera MainCamera;
+    GameObject straightSword;
+    [SerializeField] UIMapHandler map;
+    UIMapHandler mapObj;
+    [SerializeField] GameObject weaponAngleObject;
+    GameObject weaponAngleObj;
+    [SerializeField] Canvas healthUIObj;
+    Canvas healthUI;
+
+    //Character Switching
+    [SerializeField] UnityEvent<Dictionary<string, float>, Sprite, Player> startCharSwitch;
     public List<Dictionary<string, float>> charStats;
     public List<Dictionary<string, float>> charStatsBase;
+    public List<Sprite> charSprites;
+    public int currentChar = 0;
 
-    // player ability variables
-    public List<BaseAbility> passiveAbilitiesPathos = new List<BaseAbility>();
+    //Character Abilities
+    public List<BaseAbility> passiveAbilitiesPathos= new List<BaseAbility>();
     public List<BaseAbility> passiveAbilitiesEthos = new List<BaseAbility>();
     public List<BaseAbility> passiveAbilitiesLogos = new List<BaseAbility>();
     public List<List<BaseAbility>> passiveAbilities;
     int passiveNum;
+    [SerializeField] ActiveHolder activeHolder;
 
+    //Player Effects
     // player active effect variables
     public List<BaseEffect> statusEffects = new List<BaseEffect>();  // Array of status effects currently attached to the player
     public List<BaseEffect> weaponEffects = new List<BaseEffect>();  // Array of weapon effects currently attached to the player
     int statusNum;
 
-    // equipment variables
-    [SerializeField] GameObject weapon;
-    [SerializeField] GameObject weaponAngleObject;
-    GameObject weaponAngleObj;
-    GameObject straightSword;
-
-    // position variables
-    public (int, int) currentPos;
-
-    // physics variables
+    //Player Statuses
     public bool canMove = true;
-    Rigidbody2D playerPhys;
 
-    // graphics variables
-    SpriteRenderer objectSprite;
-    int spriteTimer = 0;
-    public List<Sprite> charSprites;
-    [SerializeField] UnityEvent<Dictionary<string, float>, Sprite, Player> startCharSwitch;
+    //Map Info
+    List<(int,int)> clearedRooms = new List<(int,int)> ();
+    List<(int,int)> enteredRooms= new List<(int,int)> ();
+    bool nextRoom = false;
 
-    [SerializeField] ActiveHolder activeHolder;
+    //Enemy Info
+    public int roomEnemies = 0;
 
-
+    //Runtime
     private void Start()
     {
-        playerPhys = gameObject.GetComponent<Rigidbody2D>();
         MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
         weaponAngleObj = Instantiate(weaponAngleObject, transform.parent = this.transform);
-        mapObj = Instantiate(map, transform.parent = this.transform);
-        mapObj.sceneMap = sceneMap;
+        healthUI = Instantiate(healthUIObj, transform.parent = this.transform);
+        healthManager.healthBar = healthUI.gameObject.transform.Find("HealthBar").gameObject.GetComponentInChildren<Image>();
+        mapObj = Instantiate(map, transform.parent=this.transform);
+        clearedRooms.Add(currentPos);
+        enteredRooms.Add(currentPos);
+        mapObj.enteredRooms = enteredRooms;
         mapObj.currentPos = currentPos;
         mapObj.updateMap = true;
         straightSword = Instantiate(weapon, transform.parent = weaponAngleObj.transform);
-        objectSprite = gameObject.GetComponent<SpriteRenderer>();
-        passiveAbilities = new List<List<BaseAbility>>
+        passiveAbilities = new List<List<BaseAbility>> 
         {passiveAbilitiesPathos, passiveAbilitiesEthos, passiveAbilitiesLogos};
-        currentStats = new Dictionary<string, float>()
-        {
-            { "Determination", 3 },
-            { "Confidence", 5 },
-            { "Wit", 3},
-            { "Morale", 0 },
-            { "Focus", 0 },
-            { "Damage", 5 },
-            { "Size", 1 },
-            { "Offset X", 0 },
-            { "Offset Y", 0 },
-            { "Speed", 1 }
-        };
+        healthManager.maxHP = currentStats["Determination"] * 20;
+        healthManager.currentHP = healthManager.maxHP;
 
         // TODO-Deviant: test code for equipping and adding effect
         weapon.GetComponent<BaseSwordScript>().onEquip(this);
     }
-    public int currentChar = 0;
 
     private void Update()
     {
@@ -108,18 +102,19 @@ public class Player : MonoBehaviour
             Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * currentStats["Wit"]), (Input.GetAxis("Vertical") * currentStats["Wit"]));
             playerPhys.velocity = playerMovement;
         }
-        //Reload Sprite and Camera after Scene Change
-        if (objectSprite.enabled == false)
+        //New Room Calls
+        if (nextRoom)
         {
-            spriteTimer += 1;
-            if (spriteTimer > 30)
+            timer += Time.deltaTime;
+            if(spriteLoadTimer*Time.deltaTime-timer < 0)
             {
-                objectSprite.enabled = true;
                 MainCamera.enabled = true;
-                spriteTimer = 0;
+                objectSprite.enabled = true;
+                nextRoom = false;
+                timer = 0;
             }
         }
-        //Character Swap Script
+        //Character Swap Code
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             switch (currentChar)
@@ -130,48 +125,38 @@ public class Player : MonoBehaviour
             }
             startCharSwitch.Invoke(charStats[currentChar], charSprites[currentChar], this);
         }
-        //UnityEngine.Debug.Log("got here1");
-        if (passiveAbilities[0].Count + passiveAbilities[1].Count + passiveAbilities[2].Count != passiveNum )
+        if(passiveAbilities[0].Count+passiveAbilities[1].Count+passiveAbilities[2].Count != passiveNum)
         {
             recalculateStats(charStatsBase, passiveAbilities, charStats);
             currentStats = charStats[currentChar];
+            healthManager.maxHP = currentStats["Determination"] * 20;
             passiveNum = passiveAbilities[0].Count + passiveAbilities[1].Count + passiveAbilities[2].Count;
         }
-        recalculateStats(charStatsBase, passiveAbilities, charStats);
-        // check for application/expiry of active effects
-        // Effects can be registered for two? reasons:
-        //   1. Player is afflicted with a status (good or bad)
-        //   2. Player swaps weapons
-
-        // Effects can expire for two? reasons?
-        //   1. Timer for status has expired
-        //   2. Player swaps weapons
-
     }
+    //Collision Detection
     void OnTriggerEnter2D(UnityEngine.Collider2D other)
     {
         switch (other.gameObject.tag)
         {
             case "Ability":
                 {
-                    if (other.GetComponent<AbilityHolder>().heldAbility != null)
+                    if(other.GetComponent<AbilityHolder>().heldAbility!=null)
                     {
                         BaseAbility ability = other.GetComponent<AbilityHolder>().heldAbility;
                         string type = ability.type;
                         switch (type)
                         {
-                            case "Passive":
-                                if (!passiveAbilities[currentChar].Contains(ability))
-                                {
+                            case "Passive": if (!passiveAbilities[currentChar].Contains(ability)) 
+                                { 
                                     passiveAbilities[currentChar].Add(ability);
-                                    other.GetComponent<AbilityHolder>().heldAbility = null;
-                                }
+                                    other.GetComponent<AbilityHolder>().heldAbility = null; 
+                                }  
                                 break;
-                            case "Active":
-                                if (activeHolder.ability == null)
-                                {
+                            case "Active": 
+                                if (activeHolder.ability == null) 
+                                { 
                                     activeHolder.ability = ability;
-                                }
+                                } 
                                 break;
                         }
                     }
@@ -179,27 +164,28 @@ public class Player : MonoBehaviour
                 }
             case "Door":
                 {
-                    Vector3 newPosition = Vector3.zero;
                     switch (other.gameObject.name)
                     {
                         case "North Door": currentPos = (currentPos.Item1, currentPos.Item2 + 1); break;
-                        case "South Door": currentPos = (currentPos.Item1, currentPos.Item2 - 1); break;
-                        case "East Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2); break;
+                        case "South Door": currentPos = (currentPos.Item1, currentPos.Item2 - 1);  break;
+                        case "East Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2);  break;
                         case "West Door": currentPos = (currentPos.Item1 + 1, currentPos.Item2); break;
                     }
+                    enteredRooms.Add(currentPos);
                     mapObj.currentPos = currentPos;
+                    mapObj.enteredRooms = enteredRooms;
                     mapObj.updateMap = true;
                     touchedDoor.Invoke(doorDictionary, sceneMap, currentPos, doorList);
                     switch (other.gameObject.name)
                     {
-                        case "North Door": newPosition = new Vector3(transform.position.x, doorList[1].transform.position.y + doorEnterDistance); break;
-                        case "South Door": newPosition = new Vector3(transform.position.x, doorList[0].transform.position.y - doorEnterDistance); break;
-                        case "East Door": newPosition = new Vector3(doorList[3].transform.position.x - doorEnterDistance, transform.position.y); break;
-                        case "West Door": newPosition = new Vector3(doorList[2].transform.position.x + doorEnterDistance, transform.position.y); break;
+                        case "North Door": transform.position = new Vector3(transform.position.x, doorList[1].transform.position.y + doorEnterDistance); break;
+                        case "South Door": transform.position = new Vector3(transform.position.x, doorList[0].transform.position.y - doorEnterDistance); break;
+                        case "East Door": transform.position = new Vector3(doorList[3].transform.position.x - doorEnterDistance, transform.position.y); break;
+                        case "West Door": transform.position = new Vector3(doorList[2].transform.position.x + doorEnterDistance, transform.position.y); break;
                     }
                     MainCamera.enabled = false;
                     objectSprite.enabled = false;
-                    transform.position = newPosition;
+                    nextRoom = true;
                     break;
                 }
         }
@@ -233,6 +219,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Add a status effect to the list of effects
     public void registerStatus(EffectHolder caller)
     {
         statusEffects.Add(Instantiate(caller.effect));
@@ -240,9 +227,9 @@ public class Player : MonoBehaviour
         statusNum++;
     }
 
-    public void removeStatus(EffectHolder caller)
+    //Enemy Methods
+    public void OnEnemyKilled(GameObject enemy)
     {
-        statusEffects.RemoveAt(caller.listIndex);
-        statusNum--;
+        
     }
 }
