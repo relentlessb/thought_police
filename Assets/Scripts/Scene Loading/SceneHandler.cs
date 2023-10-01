@@ -67,8 +67,8 @@ public class SceneHandler : MonoBehaviour
             {
                 case 0: newDoor.name = "North Door"; break;
                 case 1: newDoor.name = "South Door"; break;
-                case 2: newDoor.name = "East Door"; break;
-                case 3: newDoor.name = "West Door"; break;
+                case 2: newDoor.name = "West Door"; break;
+                case 3: newDoor.name = "East Door"; break;
             }
         }
     }
@@ -115,8 +115,8 @@ public class SceneHandler : MonoBehaviour
             {
                 case "North Door": door.transform.position = new Vector3(0, roomSizeY / 2 - .25f, 0); break;
                 case "South Door": door.transform.position = new Vector3(0, -(roomSizeY / 2) + .5f, 0); break;
-                case "East Door": door.transform.position = new Vector3(-(roomSizeX / 2) + .25f, 0, 0); break;
-                case "West Door": door.transform.position = new Vector3(roomSizeX / 2 - .25f, 0, 0); break;
+                case "East Door": door.transform.position = new Vector3(roomSizeX / 2 + .25f, 0, 0); break;
+                case "West Door": door.transform.position = new Vector3((-roomSizeX / 2) - .25f, 0, 0); break;
             }
         }
     }
