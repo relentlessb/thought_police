@@ -28,6 +28,7 @@ public class KeypadPuzzle : MonoBehaviour
     }
     public void Clear()
     {
+        colorChangingFont.color = Color.black;
         Answer.text = string.Empty;
     }
 
