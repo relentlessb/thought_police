@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    [SerializeField] Image healthBar;
+    public Image healthBar;
     public float currentHP;
     public float maxHP;
 

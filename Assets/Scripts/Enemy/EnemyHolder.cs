@@ -40,7 +40,7 @@ public class EnemyHolder : MonoBehaviour
                     {
                         Vector2 attackDir = player.transform.position - transform.position;
                         Vector3 originPos = transform.position;
-                        attackScript.splashAttack(attackDir, attackItem, originPos);
+                        attackScript.acidAttack(attackDir, attackItem, originPos);
                         state = attackState.cooldown;
                     }
                     break;

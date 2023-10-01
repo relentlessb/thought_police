@@ -89,7 +89,6 @@ public class Player : MonoBehaviour
         {passiveAbilitiesPathos, passiveAbilitiesEthos, passiveAbilitiesLogos};
         healthManager.maxHP = currentStats["Determination"] * 20;
         healthManager.currentHP = healthManager.maxHP;
-
         // TODO-Deviant: test code for equipping and adding effect
         weapon.GetComponent<BaseSwordScript>().onEquip(this);
     }

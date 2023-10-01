@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6596828981005219828}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.13, y: 1.479, z: 0}
-  m_LocalScale: {x: 1.5, y: 0.84375, z: 1.5}
+  m_LocalScale: {x: 1.07574, y: 0.60510373, z: 1.07574}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4439809577555650902}
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapRoom: {fileID: 7758837199930255495, guid: 00a6b79ebc4ace34aa6fea95b3e35ad4, type: 3}
+  updateMap: 0
 --- !u!1 &9099412662234086190
 GameObject:
   m_ObjectHideFlags: 0
