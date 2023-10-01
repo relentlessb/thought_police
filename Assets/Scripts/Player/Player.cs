@@ -42,8 +42,8 @@ public class Player : MonoBehaviour
     int passiveNum;
 
     // player active effect variables
-    public List<EffectHolder> statusEffects = new List<EffectHolder>();  // Array of status effects currently attached to the player
-    public List<EffectHolder> weaponEffects = new List<EffectHolder>();  // Array of weapon effects currently attached to the player
+    public List<BaseEffect> statusEffects = new List<BaseEffect>();  // Array of status effects currently attached to the player
+    public List<BaseEffect> weaponEffects = new List<BaseEffect>();  // Array of weapon effects currently attached to the player
     int statusNum;
 
     // equipment variables
@@ -222,9 +222,9 @@ public class Player : MonoBehaviour
                     charStats[i][statName] += ability.statChange[statName];
                 }
                 // apply status effects
-                foreach (EffectHolder effectHolder in statusEffects)
+                foreach (BaseEffect baseEffect in statusEffects)
                 {
-                    charStats[i][statName] += effectHolder.effect.statChange[statName];
+                    charStats[i][statName] += baseEffect.statChange[statName];
                 }
 
                 //TODO-Deviant: copy from status above
@@ -235,7 +235,7 @@ public class Player : MonoBehaviour
 
     public void registerStatus(EffectHolder caller)
     {
-        statusEffects.Add(caller);
+        statusEffects.Add(Instantiate(caller.effect));
         caller.listIndex = statusEffects.Count;
         statusNum++;
     }
