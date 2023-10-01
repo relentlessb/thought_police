@@ -63,6 +63,9 @@ public class CutsceneDirector : MonoBehaviour
                                 case Actor.actionState.ready:
                                     {
                                         dialogueAnimator.SetBool("showDialogue", true);
+                                        actorObj.actionTimer += Time.deltaTime;
+                                        if (actorObj.actionTimer > 1)
+                                        {
                                         dialogueInsert.text = "";
                                         dialogueSentences = new Queue<string>();
                                         foreach (string sentence in actorObj.actions[actorObj.currentAction].sentences)
@@ -71,8 +74,10 @@ public class CutsceneDirector : MonoBehaviour
                                         }
                                         actorObj.state = Actor.actionState.slowText;
                                         fullSentence = dialogueSentences.Dequeue();
-                                        splitSentence = fullSentence.ToCharArray();
+                                        splitSentence = fullSentence.ToCharArray();                                        
                                         actorObj.actionTimer = 0;
+                                        }
+
                                         break;
                                     }
                                 case Actor.actionState.inProgress:

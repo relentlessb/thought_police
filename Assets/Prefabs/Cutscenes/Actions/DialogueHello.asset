@@ -15,6 +15,5 @@ MonoBehaviour:
   name: Hello
   type: dialogue
   sentences:
-  - Testing 12
-  - Testing 12
+  - Yo What's Up
   destinationPos: {x: 0, y: 0, z: 0}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Active Abilities/Dash")]
 public class ActiveTest : BaseAbility
 {
     public override void ActiveAbility(Player player)
