@@ -27,6 +27,7 @@ public class ScrambledTextUI : MonoBehaviour
         int n = charArray.Length;
         while (n > 1)
         {
+            //Shuffle characters using Fisher-Yates shuffle algorithm
             n--;
             int k = rng.Next(n + 1);
             char value = charArray[k];
