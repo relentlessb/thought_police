@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5112669659876817894}
   - component: {fileID: 6866694865125479030}
   m_Layer: 0
-  m_Name: DamageOverTimeEffect
+  m_Name: WeaponSpeedDecreaseEffect
   m_TagString: Effect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe966373fb67a544495814338a45a754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 11400000, guid: 8aeff1211cef22c4192ea1b6b2380a79, type: 2}
+  effect: {fileID: 11400000, guid: aa0c83cab9d410043873bc91a0a5ddb5, type: 2}
+  listIndex: 0

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class TestEffect : BaseEffect
+public class TestWeaponEffect : BaseEffect
 {
     private void Awake()
     {
         loadStats();
+        type = BaseEffect.effectType.weapon;
     }
     public override void loadStats()
     {

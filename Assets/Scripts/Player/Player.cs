@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     // player active effect variables
     public List<BaseEffect> statusEffects = new List<BaseEffect>();  // Array of status effects currently attached to the player
     public List<BaseEffect> weaponEffects = new List<BaseEffect>();  // Array of weapon effects currently attached to the player
-    int statusNum;
+    bool statusChanged = false;
 
     //Player Statuses
     public bool canMove = true;
@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
         {passiveAbilitiesPathos, passiveAbilitiesEthos, passiveAbilitiesLogos};
         healthManager.maxHP = currentStats["Determination"] * 20;
         healthManager.currentHP = healthManager.maxHP;
+
         // TODO-Deviant: test code for equipping and adding effect
         weapon.GetComponent<BaseSwordScript>().onEquip(this);
     }
@@ -124,13 +125,14 @@ public class Player : MonoBehaviour
             }
             startCharSwitch.Invoke(charStats[currentChar], charSprites[currentChar], this);
         }
-        if(passiveAbilities[0].Count+passiveAbilities[1].Count+passiveAbilities[2].Count != passiveNum)
+        if ( (passiveAbilities[0].Count+passiveAbilities[1].Count+passiveAbilities[2].Count != passiveNum) || (statusChanged == true) )
         {
             recalculateStats(charStatsBase, passiveAbilities, charStats);
             currentStats = charStats[currentChar];
             healthManager.maxHP = currentStats["Determination"] * 20;
             passiveNum = passiveAbilities[0].Count + passiveAbilities[1].Count + passiveAbilities[2].Count;
         }
+        recalculateStats(charStatsBase, passiveAbilities, charStats);
     }
     //Collision Detection
     void OnTriggerEnter2D(UnityEngine.Collider2D other)
@@ -216,14 +218,35 @@ public class Player : MonoBehaviour
 
             }
         }
+
+        statusChanged = false;
     }
 
     // Add a status effect to the list of effects
     public void registerStatus(EffectHolder caller)
     {
-        statusEffects.Add(Instantiate(caller.effect));
-        caller.listIndex = statusEffects.Count;
-        statusNum++;
+        switch (caller.effect.type)
+        {
+            case BaseEffect.effectType.status:
+            {
+                statusEffects.Add(Instantiate(caller.effect));
+                caller.listIndex = statusEffects.Count;
+                break;
+            }
+            case BaseEffect.effectType.weapon:
+            {
+                weaponEffects.Add(Instantiate(caller.effect));
+                caller.listIndex = weaponEffects.Count;
+                break;
+            }
+            default:
+            {
+                UnityEngine.Debug.Log("ERROR: Invalid effect type");
+                break;
+            }
+        }
+        
+        statusChanged = true;
     }
 
     //Enemy Methods

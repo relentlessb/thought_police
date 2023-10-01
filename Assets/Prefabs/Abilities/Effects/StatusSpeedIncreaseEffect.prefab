@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5112669659876817894}
   - component: {fileID: 6866694865125479030}
   m_Layer: 0
-  m_Name: SpeedIncreaseEffect
+  m_Name: StatusSpeedIncreaseEffect
   m_TagString: Effect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -7,7 +7,6 @@ public class BaseEffect : ScriptableObject
 {
     public new string name;
     public string desc;
-    public string type;
 
     public int determination;
     public int confidence;
@@ -24,7 +23,15 @@ public class BaseEffect : ScriptableObject
     public float hitPercentage;   // this is the percentage (as 0-1.0) likelihood that the effect will proc
     public bool isPersistent;     // for effects that persist (such as weapon effects), setting this to true prevents destruction of the effect
 
+    public effectType type;       // type of effect for proper connection to entities
+
     public Dictionary<string, float> statChange;
+
+    public enum effectType
+    {
+        status,
+        weapon,
+    }
 
     public virtual void loadStats()
     {
