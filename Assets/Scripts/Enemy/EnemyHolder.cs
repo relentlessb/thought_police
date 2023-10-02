@@ -11,12 +11,17 @@ public class EnemyHolder : MonoBehaviour
     GameObject player;
     Rigidbody2D enemyPhys;
     float cooldownTimer;
+    public int maxHealth;
     enum attackState
     {
         ready,
         cooldown,
     }
     attackState state = attackState.ready;
+    private void Awake()
+    {
+        maxHealth = enemyScript.health;
+    }
     private void Start()
     {
         cooldownTimer = attackScript.cooldownTime;

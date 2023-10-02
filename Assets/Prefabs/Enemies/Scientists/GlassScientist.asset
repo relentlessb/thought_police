@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GlassScientist
   m_EditorClassIdentifier: 
   name: Glass Scientist
-  health: 10
+  health: 25
   speed: 2
   standDistance: 4

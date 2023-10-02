@@ -9,14 +9,14 @@ public class Player : MonoBehaviour
     //Player Info
     [SerializeField] SpriteRenderer objectSprite;
     [SerializeField] Rigidbody2D playerPhys;
-    [SerializeField] GameObject weapon;
+    [SerializeField] PlayerWeaponHolder weaponHolder;
     [SerializeField] HealthManager healthManager;
 
     //Stats
     public Dictionary<string, float> currentStats;
 
     //Scene
-    [SerializeField] SceneHandler sceneHandler;
+    public SceneHandler sceneHandler;
     public Dictionary<(int, int), string> sceneMap;
     public (int, int) currentPos;
     int spriteLoadTimer = 10; //Frames
@@ -31,11 +31,9 @@ public class Player : MonoBehaviour
     //Children Objects
     [SerializeField] Camera cameraObject;
     Camera MainCamera;
-    GameObject straightSword;
+    PlayerWeaponHolder weapon;
     [SerializeField] UIMapHandler map;
     UIMapHandler mapObj;
-    [SerializeField] GameObject weaponAngleObject;
-    GameObject weaponAngleObj;
     [SerializeField] Canvas healthUIObj;
     Canvas healthUI;
 
@@ -69,7 +67,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
-        weaponAngleObj = Instantiate(weaponAngleObject, transform.parent = this.transform);
+        weapon = Instantiate(weaponHolder, transform.parent = this.transform);
         healthUI = Instantiate(healthUIObj, transform.parent = this.transform);
         healthManager.healthBar = healthUI.gameObject.transform.Find("HealthBar").gameObject.transform.Find("HP").GetComponent<Image>();
         mapObj = Instantiate(map, transform.parent=this.transform);
@@ -78,10 +76,10 @@ public class Player : MonoBehaviour
         mapObj.enteredRooms = enteredRooms;
         mapObj.currentPos = currentPos;
         mapObj.updateMap = true;
-        straightSword = Instantiate(weapon, transform.parent = weaponAngleObj.transform);
         passiveAbilities = new List<List<BaseAbility>> 
         {passiveAbilitiesPathos, passiveAbilitiesEthos, passiveAbilitiesLogos};
         healthManager.maxHP = currentStats["Determination"] * 20;
+        weapon.attackSpeed = 1 + currentStats["Speed"] / 4;
         healthManager.currentHP = healthManager.maxHP;
 }
 
@@ -121,6 +119,7 @@ public class Player : MonoBehaviour
             recalculateStats(charStatsBase, passiveAbilities, charStats);
             currentStats = charStats[currentChar];
             healthManager.maxHP = currentStats["Determination"] * 20;
+            weapon.attackSpeed = 1 + currentStats["Speed"] / 4;
             passiveNum = passiveAbilities[0].Count + passiveAbilities[1].Count + passiveAbilities[2].Count;
         }
     }
@@ -171,8 +170,8 @@ public class Player : MonoBehaviour
                     {
                         case "North Door": transform.position = new Vector3(transform.position.x, doorList[1].transform.position.y + doorEnterDistance); break;
                         case "South Door": transform.position = new Vector3(transform.position.x, doorList[0].transform.position.y - doorEnterDistance); break;
-                        case "East Door": transform.position = new Vector3(doorList[3].transform.position.x - doorEnterDistance, transform.position.y); break;
-                        case "West Door": transform.position = new Vector3(doorList[2].transform.position.x + doorEnterDistance, transform.position.y); break;
+                        case "East Door": transform.position = new Vector3(doorList[2].transform.position.x + doorEnterDistance, transform.position.y); break;
+                        case "West Door": transform.position = new Vector3(doorList[3].transform.position.x - doorEnterDistance, transform.position.y); break;
                     }
                     MainCamera.enabled = false;
                     objectSprite.enabled = false;

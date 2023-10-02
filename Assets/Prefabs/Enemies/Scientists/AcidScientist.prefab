@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6100273783186187245}
   - component: {fileID: -8198343147274856138}
   - component: {fileID: 4221212557231455540}
+  - component: {fileID: -4603699262257201466}
   m_Layer: 0
   m_Name: AcidScientist
   m_TagString: Untagged
@@ -102,6 +103,7 @@ MonoBehaviour:
   enemyScript: {fileID: 11400000, guid: 5cb8ba178bac7dc45aed11d1e4c7f2c1, type: 2}
   attackScript: {fileID: 11400000, guid: 74be7735c5b648a47b41ad98b570aa5a, type: 2}
   attackItem: {fileID: 6500349899744611651, guid: 52f6fcfbda42c644a946809677ed01bf, type: 3}
+  maxHealth: 20
 --- !u!50 &-8198343147274856138
 Rigidbody2D:
   serializedVersion: 4
@@ -149,3 +151,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.45257598, y: 0.63207}
   m_EdgeRadius: 0
+--- !u!114 &-4603699262257201466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6916048810688601418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318469ff14a9bcf45865aba02e61253c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHolder: {fileID: 6100273783186187245}
+  sprite: {fileID: 6130262332646533113}

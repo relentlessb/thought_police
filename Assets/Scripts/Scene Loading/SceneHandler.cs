@@ -120,4 +120,8 @@ public class SceneHandler : MonoBehaviour
             }
         }
     }
+    public void loadTemporaryScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+    }
 }
