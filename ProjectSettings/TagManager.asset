@@ -13,6 +13,7 @@ TagManager:
   - GroundObstacle
   - RoomEnemyPos
   - FriendlyWeapon
+    Effect
   layers:
   - Default
   - TransparentFX
