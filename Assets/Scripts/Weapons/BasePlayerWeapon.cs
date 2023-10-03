@@ -13,13 +13,22 @@ public class BasePlayerWeapon : ScriptableObject
     public string rightClickAnimBool;
     public string speedMultiplierAnimName;
     public GameObject weaponObject;
+    [SerializeField] EffectHolder attackEffectHolder;  // this is the effect of attacks dealt by this weapon
+    [SerializeField] EffectHolder holdingEffectHolder; // this is the effect of holding the weapon (on the holder)
+
+    // this should be called for all weapons on pickup - it registers weapon effects on the player object
+    public void onEquip(Player player)
+    {
+        player.registerStatus(holdingEffectHolder);
+    }
 
     public virtual void weaponLeftClick(GameObject weaponObject, string leftClickAnimBool, string speedMultiplierAnimName, float animationSpeedMultiplier)
     {
         weaponObject.GetComponent<BoxCollider2D>().enabled = true;
         Animator weaponAnimator = weaponObject.GetComponent<Animator>();
         weaponAnimator.SetFloat(speedMultiplierAnimName, animationSpeedMultiplier);
-        weaponAnimator.SetTrigger(leftClickAnimBool);    }
+        weaponAnimator.SetTrigger(leftClickAnimBool);    
+    }
     public virtual void weaponLeftClickEnd(GameObject weaponObject, string leftClickAnimBool)
     {
         weaponObject.GetComponent<BoxCollider2D>().enabled = false;

@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
         healthManager.currentHP = healthManager.maxHP;
 
         // TODO-Deviant: test code for equipping and adding effect - remove this when we actually are able to equip/unequip stuff normally
-        weapon.GetComponent<BaseSwordScript>().onEquip(this);
+        weapon.weaponScript.onEquip(this);
     }
 
     private void Update()

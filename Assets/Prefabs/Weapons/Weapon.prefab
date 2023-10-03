@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponScript: {fileID: 11400000, guid: 2646f2ce01fa469449ce6076f740f8c0, type: 2}
+  attackSpeed: 0
