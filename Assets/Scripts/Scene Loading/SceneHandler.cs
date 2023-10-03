@@ -7,45 +7,33 @@ public class SceneHandler : MonoBehaviour
 {
     public List<GameObject> doorList = new List<GameObject>();
     public GameObject door;
-    public MainCharacterHandler characterHandler;
     public Player player;
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        createRandomDungeon(door, doorList,characterHandler, player);
+        createRandomDungeon(door, doorList, player);
     }
-    void createRandomDungeon(GameObject door, List<GameObject> doorList, MainCharacterHandler characterHandler, Player player)
+    void createRandomDungeon(GameObject door, List<GameObject> doorList, Player player)
     {
+        (int, int) startPos = (0, 0);
         List<(int,int)> randomMap = CoordinateMapGenerator.GenerateRandomMap(10,5);
         List<((int, int), (int, int))>  doorDictionary = RandomCoordinateConnector.dungeonPathsFromOrigin(randomMap);
         Dictionary<(int, int), string>  sceneMap = CoordinateToSceneHandler.loadRandomGeneratedMap(randomMap);
         CreateDirDoors(door, doorList);
-        LoadNextScene(sceneMap[(0, 0)], doorList);
-        (int, int) startPos = (0, 0);
-        MainCharacterHandler characterHandlerObject = Instantiate(characterHandler);
-        characterHandlerObject.sceneMap = sceneMap;
-        characterHandlerObject.currentPos = startPos;
-        characterHandlerObject.doorList = doorList;
-        characterHandlerObject.doorDictionary = doorDictionary;
-        DontDestroyOnLoad(characterHandlerObject);
+        LoadNextScene(sceneMap[startPos], doorList);
+        instantiatePlayer(sceneMap, startPos, doorList, doorDictionary);
         activateRoomDoors(doorDictionary, startPos, doorList);
-
     }
-    void StartPremadeDungeon(int dungeonNum, Dictionary<(int, int), string> sceneMap, List<((int, int), (int, int))> doorDictionary, GameObject door, List<GameObject> doorList, MainCharacterHandler characterHandler, Player player)
+    void StartPremadeDungeon(int dungeonNum, Dictionary<(int, int), string> sceneMap, List<((int, int), (int, int))> doorDictionary, GameObject door, List<GameObject> doorList, Player player)
     {
+        (int,int) startPos = (0, 0);
         switch (dungeonNum)
         {
-            case 0: sceneMap = TutorialDungeon.sceneMap; doorDictionary = TutorialDungeon.doorDictionary; break;
+            case 0: sceneMap = TutorialDungeon.sceneMap; doorDictionary = TutorialDungeon.doorDictionary; startPos = (0, 0); break;
         }
         CreateDirDoors(door, doorList);
-        LoadNextScene(sceneMap[(0, 0)], doorList);
-        (int, int) startPos = (0, 0);
-        MainCharacterHandler characterHandlerObject = Instantiate(characterHandler);
-        characterHandlerObject.sceneMap = sceneMap;
-        characterHandlerObject.currentPos = startPos;
-        characterHandlerObject.doorList = doorList;
-        characterHandlerObject.doorDictionary = doorDictionary;
-        DontDestroyOnLoad(characterHandlerObject);
+        LoadNextScene(sceneMap[startPos], doorList);
+        instantiatePlayer(sceneMap, startPos, doorList, doorDictionary);
         activateRoomDoors(doorDictionary, startPos, doorList);
     }
     void LoadNextScene(string sceneName, List<GameObject> doorList)
@@ -123,5 +111,15 @@ public class SceneHandler : MonoBehaviour
     public void loadTemporaryScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+    }
+    void instantiatePlayer(Dictionary<(int, int), string> sceneMap, (int,int) startPos, List<GameObject> doorList, List<((int, int), (int, int))> doorDictionary)
+    {
+        Player playerInstance = Instantiate(player);
+        playerInstance.sceneMap = sceneMap;
+        playerInstance.currentPos = startPos;
+        playerInstance.doorList = doorList;
+        playerInstance.doorDictionary = doorDictionary;
+        playerInstance.sceneHandler = this;
+        DontDestroyOnLoad(playerInstance);
     }
 }

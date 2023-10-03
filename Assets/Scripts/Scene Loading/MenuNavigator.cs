@@ -56,6 +56,7 @@ public class MenuNavigator : MonoBehaviour
             buttonPress.Play();
             if (chosen == 0)
             {
+                DontDestroyOnLoad(Camera.main);
                 sceneHandlerObj = Instantiate(sceneHandler);
             }
             else if (chosen == 1)

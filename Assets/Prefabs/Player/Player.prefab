@@ -265,12 +265,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  charSprites: []
   currentChar: 0
+  pathosSprite: {fileID: 7482667652216324306, guid: 54233c2b9f6858b4297eb8a2fead3cec, type: 3}
+  ethosSprite: {fileID: 7482667652216324306, guid: 5b07416c1cda66840bef9bec5e65e48c, type: 3}
+  logosSprite: {fileID: 7482667652216324306, guid: c14f0c92264658a40a3fcf874150b855, type: 3}
   passiveAbilitiesPathos: []
   passiveAbilitiesEthos: []
   passiveAbilitiesLogos: []
   activeHolder: {fileID: 6386471485365841822}
+  statusEffects: []
+  weaponEffects: []
   canMove: 1
   roomEnemies: 0
 --- !u!50 &6384603725014173024

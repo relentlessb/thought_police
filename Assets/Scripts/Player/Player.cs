@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +6,10 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    //Player Info
+    //Character Starter Info
+    int startingCharacter = 0;
+
+    //PlayerObj Info
     [SerializeField] SpriteRenderer objectSprite;
     [SerializeField] Rigidbody2D playerPhys;
     [SerializeField] PlayerWeaponHolder weaponHolder;
@@ -30,7 +32,6 @@ public class Player : MonoBehaviour
     public float doorEnterDistance;
 
     //Children Objects
-    [SerializeField] Camera cameraObject;
     Camera MainCamera;
     PlayerWeaponHolder weapon;
     [SerializeField] UIMapHandler map;
@@ -39,11 +40,13 @@ public class Player : MonoBehaviour
     Canvas healthUI;
 
     //Character Switching
-    [SerializeField] UnityEvent<Dictionary<string, float>, Sprite, Player> startCharSwitch;
-    public List<Dictionary<string, float>> charStats;
     public List<Dictionary<string, float>> charStatsBase;
-    public List<Sprite> charSprites;
     public int currentChar = 0;
+    public Sprite pathosSprite;
+    public Sprite ethosSprite;
+    public Sprite logosSprite;
+    List<Dictionary<string, float>> charStats = new List<Dictionary<string, float>>();
+    List<Sprite> charSprites = new List<Sprite>();
 
     //Character Abilities
     public List<BaseAbility> passiveAbilitiesPathos= new List<BaseAbility>();
@@ -73,21 +76,79 @@ public class Player : MonoBehaviour
     //Runtime
     private void Start()
     {
-        MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
+        //Parent Camera
+        Camera.main.transform.parent = this.transform;
+        MainCamera = Camera.main;
+
+        //Load Saved Stats
+        Dictionary<string, float> pathosStats = new Dictionary<string, float>()
+        {
+            { "Determination", 3 },
+            { "Confidence", 4},
+            { "Wit", 3},
+            { "Morale", 0 },
+            { "Focus", 0 },
+            { "Damage", 5 },
+            { "Size", 1 },
+            { "Offset X", 0 },
+            { "Offset Y", 0 },
+            { "Speed", 1 }
+        };
+        Dictionary<string, float> ethosStats = new Dictionary<string, float>()
+        {
+            { "Determination", 2 },
+            { "Confidence", 8 },
+            { "Wit", 5},
+            { "Morale", 2},
+            { "Focus", 0},
+            { "Damage", 5},
+            { "Size", 1},
+            { "Offset X", 0},
+            { "Offset Y", 0},
+            { "Speed", 3}
+        };
+        Dictionary<string, float> logosStats = new Dictionary<string, float>()
+        {
+            { "Determination", 2 },
+            { "Confidence", 3 },
+            { "Wit", 6},
+            { "Morale", 0},
+            { "Focus", 2},
+            { "Damage", 4},
+            { "Size", 1 },
+            { "Offset X", 4},
+            { "Offset Y", 4},
+            { "Speed", 5}
+        };
+        charStats.Add(pathosStats); charStats.Add(ethosStats); charStats.Add(logosStats);
+        currentStats = charStats[startingCharacter];
+        currentChar = startingCharacter;
+
+        //Instantiate Children
         weapon = Instantiate(weaponHolder, transform.parent = this.transform);
         healthUI = Instantiate(healthUIObj, transform.parent = this.transform);
         healthManager.healthBar = healthUI.gameObject.transform.Find("HealthBar").gameObject.transform.Find("HP").GetComponent<Image>();
         mapObj = Instantiate(map, transform.parent=this.transform);
+
+        //Map Lists
         clearedRooms.Add(currentPos);
         enteredRooms.Add(currentPos);
         mapObj.enteredRooms = enteredRooms;
         mapObj.currentPos = currentPos;
         mapObj.updateMap = true;
+
+        //Ability List
         passiveAbilities = new List<List<BaseAbility>> 
         {passiveAbilitiesPathos, passiveAbilitiesEthos, passiveAbilitiesLogos};
+
+        //Health Manager
         healthManager.maxHP = currentStats["Determination"] * 20;
         weapon.attackSpeed = 1 + currentStats["Speed"] / 4;
         healthManager.currentHP = healthManager.maxHP;
+
+        //Character Sprites
+        charSprites.Add(pathosSprite); charSprites.Add(ethosSprite); charSprites.Add(logosSprite);
+        GetComponent<SpriteRenderer>().sprite = charSprites[currentChar];
 
         // TODO-Deviant: test code for equipping and adding effect - remove this when we actually are able to equip/unequip stuff normally
         weapon.weaponScript.onEquip(this);
@@ -98,7 +159,7 @@ public class Player : MonoBehaviour
         //Movement Script
         if (canMove)
         {
-            Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * currentStats["Speed"]), (Input.GetAxis("Vertical") * currentStats["Speed"]));
+            Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * currentStats["Wit"]), (Input.GetAxis("Vertical") * currentStats["Wit"]));
             playerPhys.velocity = playerMovement;
         }
         //New Room Calls
@@ -122,7 +183,7 @@ public class Player : MonoBehaviour
                 case 1: currentChar = 2; break;
                 case 2: currentChar = 0; break;
             }
-            startCharSwitch.Invoke(charStats[currentChar], charSprites[currentChar], this);
+            switchCharacter(charStats[currentChar], charSprites[currentChar], this);
         }
         if ( (passiveAbilities[0].Count+passiveAbilities[1].Count+passiveAbilities[2].Count != passiveNum) || (effectsChanged == true) )
         {
@@ -189,6 +250,12 @@ public class Player : MonoBehaviour
                     break;
                 }
         }
+    }
+    // character switching
+    public void switchCharacter(Dictionary<string, float> charStats, Sprite sprite, Player playerInstance)
+    {
+        playerInstance.GetComponent<SpriteRenderer>().sprite = sprite;
+        playerInstance.currentStats = charStats;
     }
 
     // recalculates stats for all characters on the fly
