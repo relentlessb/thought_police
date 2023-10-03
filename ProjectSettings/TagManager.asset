@@ -11,6 +11,8 @@ TagManager:
   - Enemy
   - Projectile
   - GroundObstacle
+  - RoomEnemyPos
+  - FriendlyWeapon
     Effect
   layers:
   - Default

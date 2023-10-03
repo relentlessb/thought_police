@@ -179,6 +179,7 @@ MonoBehaviour:
   answerInputField: {fileID: 1804422996}
   submitButton: {fileID: 102665998}
   scrambledTextUI: {fileID: 896256526}
+  feedbackText: {fileID: 2007985259}
 --- !u!1 &57365434
 GameObject:
   m_ObjectHideFlags: 0

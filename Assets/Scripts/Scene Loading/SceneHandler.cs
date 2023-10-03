@@ -113,11 +113,15 @@ public class SceneHandler : MonoBehaviour
         {
             switch (door.name)
             {
-                case "North Door": door.transform.position = new Vector3(0, roomSizeY / 2 - .25f, 0); break;
-                case "South Door": door.transform.position = new Vector3(0, -(roomSizeY / 2) + .5f, 0); break;
-                case "East Door": door.transform.position = new Vector3(roomSizeX / 2 + .25f, 0, 0); break;
-                case "West Door": door.transform.position = new Vector3((-roomSizeX / 2) - .25f, 0, 0); break;
+                case "North Door": door.transform.position = new Vector3(0, roomSizeY / 2, 0); break;
+                case "South Door": door.transform.position = new Vector3(0, -(roomSizeY / 2), 0); break;
+                case "East Door": door.transform.position = new Vector3(roomSizeX / 2, 0, 0); break;
+                case "West Door": door.transform.position = new Vector3((-roomSizeX / 2), 0, 0); break;
             }
         }
+    }
+    public void loadTemporaryScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
 }

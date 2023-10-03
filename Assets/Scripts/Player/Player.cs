@@ -10,14 +10,14 @@ public class Player : MonoBehaviour
     //Player Info
     [SerializeField] SpriteRenderer objectSprite;
     [SerializeField] Rigidbody2D playerPhys;
-    [SerializeField] GameObject weapon;
+    [SerializeField] PlayerWeaponHolder weaponHolder;
     [SerializeField] HealthManager healthManager;
 
     //Stats
     public Dictionary<string, float> currentStats;
 
     //Scene
-    [SerializeField] SceneHandler sceneHandler;
+    public SceneHandler sceneHandler;
     public Dictionary<(int, int), string> sceneMap;
     public (int, int) currentPos;
     int spriteLoadTimer = 10; //Frames
@@ -32,11 +32,9 @@ public class Player : MonoBehaviour
     //Children Objects
     [SerializeField] Camera cameraObject;
     Camera MainCamera;
-    GameObject straightSword;
+    PlayerWeaponHolder weapon;
     [SerializeField] UIMapHandler map;
     UIMapHandler mapObj;
-    [SerializeField] GameObject weaponAngleObject;
-    GameObject weaponAngleObj;
     [SerializeField] Canvas healthUIObj;
     Canvas healthUI;
 
@@ -65,7 +63,7 @@ public class Player : MonoBehaviour
     public bool canMove = true;
 
     //Map Info
-    List<(int,int)> clearedRooms = new List<(int,int)> ();
+    public List<(int,int)> clearedRooms = new List<(int,int)> ();
     List<(int,int)> enteredRooms= new List<(int,int)> ();
     bool nextRoom = false;
 
@@ -76,19 +74,19 @@ public class Player : MonoBehaviour
     private void Start()
     {
         MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
-        weaponAngleObj = Instantiate(weaponAngleObject, transform.parent = this.transform);
+        weapon = Instantiate(weaponHolder, transform.parent = this.transform);
         healthUI = Instantiate(healthUIObj, transform.parent = this.transform);
-        healthManager.healthBar = healthUI.gameObject.transform.Find("HealthBar").gameObject.GetComponentInChildren<Image>();
+        healthManager.healthBar = healthUI.gameObject.transform.Find("HealthBar").gameObject.transform.Find("HP").GetComponent<Image>();
         mapObj = Instantiate(map, transform.parent=this.transform);
         clearedRooms.Add(currentPos);
         enteredRooms.Add(currentPos);
         mapObj.enteredRooms = enteredRooms;
         mapObj.currentPos = currentPos;
         mapObj.updateMap = true;
-        straightSword = Instantiate(weapon, transform.parent = weaponAngleObj.transform);
         passiveAbilities = new List<List<BaseAbility>> 
         {passiveAbilitiesPathos, passiveAbilitiesEthos, passiveAbilitiesLogos};
         healthManager.maxHP = currentStats["Determination"] * 20;
+        weapon.attackSpeed = 1 + currentStats["Speed"] / 4;
         healthManager.currentHP = healthManager.maxHP;
 
         // TODO-Deviant: test code for equipping and adding effect - remove this when we actually are able to equip/unequip stuff normally
@@ -107,12 +105,12 @@ public class Player : MonoBehaviour
         if (nextRoom)
         {
             timer += Time.deltaTime;
-            if(spriteLoadTimer*Time.deltaTime-timer < 0)
+            if(spriteLoadTimer*Time.deltaTime-timer < 0 && MainCamera.enabled == false)
             {
                 MainCamera.enabled = true;
                 objectSprite.enabled = true;
-                nextRoom = false;
                 timer = 0;
+                nextRoom= false;
             }
         }
         //Character Swap Code
@@ -131,6 +129,7 @@ public class Player : MonoBehaviour
             recalculateStats(charStatsBase, passiveAbilities, charStats);
             currentStats = charStats[currentChar];
             healthManager.maxHP = currentStats["Determination"] * 20;
+            weapon.attackSpeed = 1 + currentStats["Speed"] / 4;
             passiveNum = passiveAbilities[0].Count + passiveAbilities[1].Count + passiveAbilities[2].Count;
         }
     }
@@ -169,8 +168,8 @@ public class Player : MonoBehaviour
                     {
                         case "North Door": currentPos = (currentPos.Item1, currentPos.Item2 + 1); break;
                         case "South Door": currentPos = (currentPos.Item1, currentPos.Item2 - 1);  break;
-                        case "East Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2);  break;
-                        case "West Door": currentPos = (currentPos.Item1 + 1, currentPos.Item2); break;
+                        case "East Door": currentPos = (currentPos.Item1 + 1, currentPos.Item2);  break;
+                        case "West Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2); break;
                     }
                     enteredRooms.Add(currentPos);
                     mapObj.currentPos = currentPos;
@@ -181,8 +180,8 @@ public class Player : MonoBehaviour
                     {
                         case "North Door": transform.position = new Vector3(transform.position.x, doorList[1].transform.position.y + doorEnterDistance); break;
                         case "South Door": transform.position = new Vector3(transform.position.x, doorList[0].transform.position.y - doorEnterDistance); break;
-                        case "East Door": transform.position = new Vector3(doorList[3].transform.position.x - doorEnterDistance, transform.position.y); break;
-                        case "West Door": transform.position = new Vector3(doorList[2].transform.position.x + doorEnterDistance, transform.position.y); break;
+                        case "East Door": transform.position = new Vector3(doorList[2].transform.position.x + doorEnterDistance, transform.position.y); break;
+                        case "West Door": transform.position = new Vector3(doorList[3].transform.position.x - doorEnterDistance, transform.position.y); break;
                     }
                     MainCamera.enabled = false;
                     objectSprite.enabled = false;
