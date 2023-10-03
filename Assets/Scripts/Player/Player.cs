@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
     // player active effect variables
     public List<BaseEffect> statusEffects = new List<BaseEffect>();  // Array of status effects currently attached to the player
     public List<BaseEffect> weaponEffects = new List<BaseEffect>();  // Array of weapon effects currently attached to the player
-    bool statusChanged = false;
+    bool effectsChanged = false;
 
     //Player Statuses
     public bool canMove = true;
@@ -90,7 +91,7 @@ public class Player : MonoBehaviour
         healthManager.maxHP = currentStats["Determination"] * 20;
         healthManager.currentHP = healthManager.maxHP;
 
-        // TODO-Deviant: test code for equipping and adding effect
+        // TODO-Deviant: test code for equipping and adding effect - remove this when we actually are able to equip/unequip stuff normally
         weapon.GetComponent<BaseSwordScript>().onEquip(this);
     }
 
@@ -99,7 +100,7 @@ public class Player : MonoBehaviour
         //Movement Script
         if (canMove)
         {
-            Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * currentStats["Wit"]), (Input.GetAxis("Vertical") * currentStats["Wit"]));
+            Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * currentStats["Speed"]), (Input.GetAxis("Vertical") * currentStats["Speed"]));
             playerPhys.velocity = playerMovement;
         }
         //New Room Calls
@@ -125,14 +126,13 @@ public class Player : MonoBehaviour
             }
             startCharSwitch.Invoke(charStats[currentChar], charSprites[currentChar], this);
         }
-        if ( (passiveAbilities[0].Count+passiveAbilities[1].Count+passiveAbilities[2].Count != passiveNum) || (statusChanged == true) )
+        if ( (passiveAbilities[0].Count+passiveAbilities[1].Count+passiveAbilities[2].Count != passiveNum) || (effectsChanged == true) )
         {
             recalculateStats(charStatsBase, passiveAbilities, charStats);
             currentStats = charStats[currentChar];
             healthManager.maxHP = currentStats["Determination"] * 20;
             passiveNum = passiveAbilities[0].Count + passiveAbilities[1].Count + passiveAbilities[2].Count;
         }
-        recalculateStats(charStatsBase, passiveAbilities, charStats);
     }
     //Collision Detection
     void OnTriggerEnter2D(UnityEngine.Collider2D other)
@@ -195,7 +195,8 @@ public class Player : MonoBehaviour
     // recalculates stats for all characters on the fly
     public void recalculateStats(List<Dictionary<string, float>> charStatsBase, List<List<BaseAbility>> passiveAbilities, List<Dictionary<string, float>> charStats)
     {
-        // loop through all 3
+        UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: START");
+        // loop through all 3 players
         for (int i = 0; i <= 2; i++)
         {
             // grab the base stats
@@ -204,49 +205,74 @@ public class Player : MonoBehaviour
             // for each stat, cycle through all passive abilities, active effects, and weapon effects
             foreach (string statName in charStats[i].Keys.ToList())
             {
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before active: " + statName + ": " + charStats[i][statName]);
+                // apply active abilities
                 foreach (BaseAbility ability in passiveAbilities[i])
                 {
                     charStats[i][statName] += ability.statChange[statName];
                 }
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before status: " + statName + ": " + charStats[i][statName]);
                 // apply status effects
                 foreach (BaseEffect baseEffect in statusEffects)
                 {
                     charStats[i][statName] += baseEffect.statChange[statName];
                 }
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before weapon: " + statName + ": " + charStats[i][statName]);
+                //apply weapon effects
+                foreach (BaseEffect baseEffect in weaponEffects)
+                {
+                    charStats[i][statName] += baseEffect.statChange[statName];
+                }
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " After weapon: " + statName + ": " + charStats[i][statName]);
+            }
 
-                //TODO-Deviant: copy from status above
-
+            // make sure stats can't go below 1 - for now?
+            // this is super relevant since we could really screw things up with negative stats
+            //  such as: hitting enemy heals them for negative attack, controls are reversed for negative speed
+            // and with 0 we wouldn't be able to move, which is neat and maybe useful for a stun effect, but sucks for the player
+            foreach (string statName in charStats[i].Keys.ToList())
+            {
+                if (charStats[i][statName] <= 0)
+                {
+                    charStats[i][statName] = 1;
+                }
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " After zero and negative stats correction: " + statName + ": " + charStats[i][statName]);
             }
         }
 
-        statusChanged = false;
+        effectsChanged = false;
+        UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: END");
     }
 
     // Add a status effect to the list of effects
     public void registerStatus(EffectHolder caller)
     {
-        switch (caller.effect.type)
+        // make sure we don't crash the game if we accidentally pass in nothing
+        if (caller != null)
         {
-            case BaseEffect.effectType.status:
+            switch (caller.effect.type)
             {
-                statusEffects.Add(Instantiate(caller.effect));
-                caller.listIndex = statusEffects.Count;
-                break;
+                case BaseEffect.effectType.status:
+                    {
+                        statusEffects.Add(Instantiate(caller.effect));
+                        caller.listIndex = statusEffects.Count;
+                        break;
+                    }
+                case BaseEffect.effectType.weapon:
+                    {
+                        weaponEffects.Add(Instantiate(caller.effect));
+                        caller.listIndex = weaponEffects.Count;
+                        break;
+                    }
+                default:
+                    {
+                        UnityEngine.Debug.Log("ERROR: Invalid effect type");
+                        break;
+                    }
             }
-            case BaseEffect.effectType.weapon:
-            {
-                weaponEffects.Add(Instantiate(caller.effect));
-                caller.listIndex = weaponEffects.Count;
-                break;
-            }
-            default:
-            {
-                UnityEngine.Debug.Log("ERROR: Invalid effect type");
-                break;
-            }
+
+            effectsChanged = true;
         }
-        
-        statusChanged = true;
     }
 
     //Enemy Methods

@@ -126,8 +126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f45eb4e6f3b93a47b5e5571a6a50d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackEffectHolder: {fileID: 6866694865125479030, guid: e651be9b21bc3784385a77ed5d0eebbb, type: 3}
-  holdingEffectHolder: {fileID: 6866694865125479030, guid: 949341e12afc6744f8f503fe3786f9fc, type: 3}
+  attackEffectHolder: {fileID: 0}
+  holdingEffectHolder: {fileID: 0}
 --- !u!95 &1816716132987491170
 Animator:
   serializedVersion: 5
