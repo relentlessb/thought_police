@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472d7479dd368bf4ab36ad0bd640d72d, type: 3}
+  m_Name: TestWithEffects
+  m_EditorClassIdentifier: 
+  attackDamage: 10
+  leftClickAttackTime: 0.7
+  rightClickAttackTime: 0
+  leftClickAnimBool: swordSwing
+  rightClickAnimBool: 
+  speedMultiplierAnimName: swingSpeed
+  weaponObject: {fileID: 1816716132987491196, guid: 876d7f25686a3cf498c08dff40213a3f, type: 3}
+  attackEffectHolder: {fileID: 6866694865125479030, guid: e651be9b21bc3784385a77ed5d0eebbb, type: 3}
+  holdingEffectHolder: {fileID: 6866694865125479030, guid: 949341e12afc6744f8f503fe3786f9fc, type: 3}

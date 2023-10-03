@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerWeaponHolder : MonoBehaviour
 {
-    public BasePlayerWeapon weaponScript;
+    [SerializeField] public BasePlayerWeapon weaponScript;
     public float attackSpeed;
     float timer = 0;
     GameObject weapon;
