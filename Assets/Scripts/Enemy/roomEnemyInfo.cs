@@ -6,5 +6,5 @@ using UnityEngine;
 public class roomEnemyInfo : ScriptableObject
 {
     public List<Vector2> enemyPositions;
-    public int dungeonType;
+    public List<GameObject> enemies;
 }

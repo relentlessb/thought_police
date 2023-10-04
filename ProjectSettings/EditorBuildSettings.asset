@@ -113,4 +113,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Lab Environment/LabEnv 30.unity
     guid: 748a8d3bf5db9454ba64dc6bafe7b873
+  - enabled: 1
+    path: Assets/Scenes/Puzzles/WordScramble.unity
+    guid: d30ee685ef81c414d8b5aeb6cddaa6de
   m_configObjects: {}

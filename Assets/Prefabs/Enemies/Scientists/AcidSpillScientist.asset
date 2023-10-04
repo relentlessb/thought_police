@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AcidSpillScientist
   m_EditorClassIdentifier: 
   name: Acid Spiller
-  health: 10
+  health: 20
   speed: 1
   standDistance: 1.5

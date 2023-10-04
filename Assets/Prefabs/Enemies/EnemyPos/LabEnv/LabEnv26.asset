@@ -16,4 +16,6 @@ MonoBehaviour:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
   - {x: 0, y: 1}
-  dungeonType: 0
+  enemies:
+  - {fileID: 6916048810688601418, guid: 355aedde504e5894aa5396beb164ddb2, type: 3}
+  - {fileID: 6916048810688601418, guid: f30df5dd21f20a443ba78baf4548e90c, type: 3}
