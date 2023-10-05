@@ -11,21 +11,21 @@ public class HintUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI bluetargetColorTextHint;
     [SerializeField] private TargetColorDisplay targetColorDisplay;
 
+    private int showHintAttemptMax = 3;
+
     private void Start()
     {
         colorMatchingPuzzle.OnAttempt += ColorMatchingPuzzle_OnAttempt;
         Hide();
     }
 
-    private void ColorMatchingPuzzle_OnAttempt(object sender, System.EventArgs e)
+    private void ColorMatchingPuzzle_OnAttempt(object sender, ColorMatchingPuzzle.OnAttemptEventArgs e)
     {
-        Show();
-        HintDisplay();
-    }
-
-    private void OnDestroy()
-    {
-        colorMatchingPuzzle.OnAttempt -= ColorMatchingPuzzle_OnAttempt;
+        if (e.attempt > showHintAttemptMax)
+        {
+            Show();
+            HintDisplay();
+        }
     }
 
     private void HintDisplay()

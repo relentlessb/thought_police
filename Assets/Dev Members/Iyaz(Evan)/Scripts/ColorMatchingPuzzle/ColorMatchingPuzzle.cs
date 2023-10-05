@@ -13,16 +13,16 @@ public class ColorMatchingPuzzle : MonoBehaviour
         public bool colorMatch;
     }
 
-    public event EventHandler OnAttempt;
-   /* public class OnAttemptEventArgs : EventArgs
-    {
-        public int attempt;
-    }*/
-
     public event EventHandler<OnPuzzleSolvedEventArgs> OnPuzzleSoved;
     public class OnPuzzleSolvedEventArgs : EventArgs
     {
         public bool isPuzzleSolved;
+    }
+
+    public event EventHandler<OnAttemptEventArgs> OnAttempt;
+    public class OnAttemptEventArgs : EventArgs
+    {
+        public int attempt;
     }
 
     [SerializeField] private TargetColorDisplay targetColorDisplay;
@@ -30,12 +30,8 @@ public class ColorMatchingPuzzle : MonoBehaviour
     [SerializeField] private Button submitButton;
 
     private float errorTolerance = 0.2f;
-    private int attemptCount;
-    private void Awake()
-    {
-        attemptCount = 0;
-    }
-    private void Update()
+    private int attemptCount = 0;
+    private void Start()
     {
         submitButton.onClick.AddListener(CheckForColorMatch);
     }
@@ -79,10 +75,9 @@ public class ColorMatchingPuzzle : MonoBehaviour
         }
 
         attemptCount++;
-
-       if (attemptCount >= 3)
+        OnAttempt?.Invoke(this, new OnAttemptEventArgs
         {
-            OnAttempt?.Invoke(this, EventArgs.Empty);
-        }
+            attempt = attemptCount
+        });
     }
 }
