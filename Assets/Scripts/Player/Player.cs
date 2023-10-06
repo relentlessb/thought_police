@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
     {
         //Parent Camera
         Camera.main.transform.parent = this.transform;
+        Camera.main.transform.position = new Vector3(0,0,-10);
         MainCamera = Camera.main;
 
         //Load Saved Stats
@@ -236,6 +237,7 @@ public class Player : MonoBehaviour
                     mapObj.currentPos = currentPos;
                     mapObj.enteredRooms = enteredRooms;
                     mapObj.updateMap = true;
+                    roomEnemies = 0;
                     touchedDoor.Invoke(doorDictionary, sceneMap, currentPos, doorList);
                     switch (other.gameObject.name)
                     {
@@ -342,8 +344,12 @@ public class Player : MonoBehaviour
     }
 
     //Enemy Methods
-    public void OnEnemyKilled(GameObject enemy)
+    public void OnEnemyKilled(int roomEnemies, List<(int, int)> clearedRooms, (int, int) currentPos)
     {
-        
+        roomEnemies = roomEnemies--;
+        if(roomEnemies == 0)
+        {
+            clearedRooms.Add(currentPos);
+        }
     }
 }

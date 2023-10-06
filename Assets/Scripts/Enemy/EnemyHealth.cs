@@ -38,6 +38,9 @@ public class EnemyHealth : MonoBehaviour
             canHurt= false;
             if(currentHealth <= 0)
             {
+                Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
+                Debug.Log(player.roomEnemies);
+                player.OnEnemyKilled(player.roomEnemies, player.clearedRooms, player.currentPos);
                 Destroy(gameObject);
             }
         }

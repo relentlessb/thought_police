@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: InOut Concrete Wall Connector - Grey_0
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 1011000956, guid: e3ddcfe89d345734fbf6c9f7d9dd774f, type: 3}
+  m_Sprite: {fileID: 2034856692, guid: 571b8453309609a49932b7d8cd246742, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

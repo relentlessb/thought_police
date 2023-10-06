@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b083d79cc9d8ca4d924e45455fc6759, type: 3}
-  m_Name: LabEnv26
+  m_Name: LabEnv 23
   m_EditorClassIdentifier: 
   enemyPositions:
-  - {x: 0, y: 0}
-  - {x: 1, y: 0}
-  - {x: 0, y: 1}
+  - {x: 8, y: 2}
+  - {x: 8, y: -2}
   enemies:
   - {fileID: 6916048810688601418, guid: 355aedde504e5894aa5396beb164ddb2, type: 3}
   - {fileID: 6916048810688601418, guid: f30df5dd21f20a443ba78baf4548e90c, type: 3}
