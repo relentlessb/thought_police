@@ -109,6 +109,7 @@ public class InteractableHolder : MonoBehaviour
         {
             letter.SetActive(false);
             letter.GetComponentInChildren<Animator>().ResetTrigger("reactivate");
+            letter.transform.Find("Letter").transform.localScale = new Vector3(.25f, .25f, .25f);
         }
     }
 
