@@ -11,8 +11,7 @@ public class BaseEnemyScript : ScriptableObject
     public int health;            // Enemy health
     public float speed;           // Enemy speed
     public float baseSpeed;       // Enemy base speed (without modifiers)
-
-    //public EffectHolder[] effects;  
+ 
     public List<EffectHolder> effects = new List<EffectHolder>(); // Array of effects currently attached to the enemy
 
     public float standDistance;   // Distance at which enemy will preferrentially stand from player (to attack or do whatever)
@@ -38,18 +37,6 @@ public class BaseEnemyScript : ScriptableObject
             // this is sort of hacky, but set the current speed to base speed so we can subtract whatever the effects are later
             speed = baseSpeed;
 
-            /*for (int i = 0; i <= effects.Length; i++)
-            {
-                if (effects[i].effect.damage != 0)
-                {
-                    // note: damage is negative by default, but stored as positive
-                    health = health - effects[i].effect.damage;
-                }
-                if (effects[i].effect.speed != 0)
-                {
-                    speed = speed + effects[i].effect.speed;
-                }
-            }*/
             foreach (EffectHolder effectHolder in effects)
             {
                 if (effectHolder.effect.damage != 0)
