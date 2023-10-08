@@ -11,62 +11,16 @@ public class BaseEnemyScript : ScriptableObject
     public int health;            // Enemy health
     public float speed;           // Enemy speed
     public float baseSpeed;       // Enemy base speed (without modifiers)
+    public float movementTime; // Enemy runs movement script when timer runs out.
 
-    //public EffectHolder[] effects;  
-    public List<EffectHolder> effects = new List<EffectHolder>(); // Array of effects currently attached to the enemy
 
     public float standDistance;   // Distance at which enemy will preferrentially stand from player (to attack or do whatever)
     public float pursuitDistance; // Distance until which enemy will pursue player
     public float pursuitDelay;    // Time which the enemy will wait before tracking player when in standing state
 
-    public float mass;            // enemy mass, which should affect knockback
 
-    public float timeOfLastEffectProcess; // last time that an effect was applied
-    public float effectProcessRate; // rate at which effects are applied
 
-    public void Awake()
-    {
-        timeOfLastEffectProcess = 0;
-        effectProcessRate = 1;
-    }
-
-    public virtual void Update()
-    {
-        // process effect updates every "effectProcessRate" second-ish
-        if (Time.time > timeOfLastEffectProcess + effectProcessRate)
-        {
-            // this is sort of hacky, but set the current speed to base speed so we can subtract whatever the effects are later
-            speed = baseSpeed;
-
-            /*for (int i = 0; i <= effects.Length; i++)
-            {
-                if (effects[i].effect.damage != 0)
-                {
-                    // note: damage is negative by default, but stored as positive
-                    health = health - effects[i].effect.damage;
-                }
-                if (effects[i].effect.speed != 0)
-                {
-                    speed = speed + effects[i].effect.speed;
-                }
-            }*/
-            foreach (EffectHolder effectHolder in effects)
-            {
-                if (effectHolder.effect.damage != 0)
-                {
-                    // note: damage is negative by default, but stored as positive
-                    health = health - effectHolder.effect.damage;
-                }
-                if (effectHolder.effect.speed != 0)
-                {
-                    speed = speed + effectHolder.effect.speed;
-                }
-            }
-            timeOfLastEffectProcess = Time.time;
-        }
-    }
-
-    public virtual void enemyMovement(GameObject enemyObject, Rigidbody2D enemyPhys, GameObject player)
+    public virtual void enemyMovement(GameObject enemyObject, Rigidbody2D enemyPhys, GameObject player, float movementTime, float localTimer)
     {
         // grab the player position so we can figure out where to point
         Vector2 moveDirection = (player.transform.position - enemyObject.transform.position).normalized;

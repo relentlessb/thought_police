@@ -7,7 +7,7 @@ public class AcidFlaskMono : MonoBehaviour
 {
     float timer;
     [SerializeField] float airtime;
-    [SerializeField] int damage;
+    public int damage;
     [SerializeField] float knockback;
     [SerializeField] AudioSource breakSound;
     bool audioPlayed = false;

@@ -5,20 +5,26 @@ using UnityEngine.TextCore.Text;
 
 public class InteractableHolder : MonoBehaviour
 {
+    //Base Mechanics
+    [SerializeField] KeyCode interactionKey;
+    [SerializeField] InteractableBase interactableScript;
+    [SerializeField] SceneHandler sceneHandler;
+    bool interacted = false;
+    bool canInteract = false;
+    GameObject player;
+
+    //3D Text
     [TextAreaAttribute]
     [SerializeField] string sentence;
     [SerializeField] List<Sprite> alphaNumerImages = new List<Sprite>();
     [SerializeField] List<string> alphaNumerStringKey = new List<string>();
-    [SerializeField] KeyCode interactionKey;
-    [SerializeField] InteractableBase interactableScript;
-    [SerializeField] SceneHandler sceneHandler;
     [SerializeField] GameObject letter;
-    bool interacted = false;
-    bool canInteract = false;
     bool letterListCreated = false;
     List<GameObject> letterList = new List<GameObject>();
-    GameObject player;
     bool notFirst = false;
+   
+    //"Toggle Visibility"
+    [SerializeField] SpriteRenderer spriteVisibility;
 
     private void Update()
     {
@@ -44,6 +50,17 @@ public class InteractableHolder : MonoBehaviour
                             Camera.main.transform.parent = null;
                             Destroy(player);
                             interactableScript.OnRandomDungeonInteract(sceneHandler);
+                        }
+                        break;
+                    }
+                case "toggleVisibility":
+                    {
+                        if(spriteVisibility.enabled == true)
+                        {
+                            spriteVisibility.enabled = false;
+                        } else if(spriteVisibility.enabled == false)
+                        {
+                            spriteVisibility.enabled = true;
                         }
                         break;
                     }
@@ -92,6 +109,7 @@ public class InteractableHolder : MonoBehaviour
         {
             letter.SetActive(false);
             letter.GetComponentInChildren<Animator>().ResetTrigger("reactivate");
+            letter.transform.Find("Letter").transform.localScale = new Vector3(.25f, .25f, .25f);
         }
     }
 

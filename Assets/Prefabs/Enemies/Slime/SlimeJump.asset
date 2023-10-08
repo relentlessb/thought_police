@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c699ecb15b22054bb1351b76654bf78, type: 3}
-  m_Name: AcidSpillScientist
+  m_Script: {fileID: 11500000, guid: 7100255ce7d1ed442a492275e7977a60, type: 3}
+  m_Name: SlimeJump
   m_EditorClassIdentifier: 
-  name: Acid Spiller
-  health: 20
-  speed: 1
+  name: Slime
+  health: 15
+  speed: 2
   baseSpeed: 1
-  standDistance: 1.5
-  pursuitDistance: 0
-  pursuitDelay: 0
+  movementTime: 3
+  standDistance: 1
+  pursuitDistance: 1
+  pursuitDelay: 0.5

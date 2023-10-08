@@ -7,8 +7,10 @@ public class BaseAttack : ScriptableObject
     public new string name;
     public float attackSpeed;
     public float cooldownTime;
+    public int damage;
+    public int knockback;
 
-    public virtual void acidAttack(Vector2 attackDir, GameObject attackItem, Vector3 originPos)
+    public virtual void attack(Vector2 attackDir, GameObject attackItem, Vector3 originPos)
     {
         GameObject projectile;
         Quaternion rotation = Quaternion.identity;

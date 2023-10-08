@@ -7,8 +7,8 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] EnemyHolder enemyHolder;
     [SerializeField] SpriteRenderer sprite;
-    int currentHealth;
-    int maxHealth;
+    public int currentHealth;
+    public int maxHealth;
     float timer = 0;
     bool canHurt = true;
     private void Start()

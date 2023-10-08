@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Attacks/Acid Scientist/ Acid Spill")]
 public class AcidSpill : BaseAttack
 {
-    public override void acidAttack(Vector2 attackDir, GameObject attackItem, Vector3 originPos)
+    public override void attack(Vector2 attackDir, GameObject attackItem, Vector3 originPos)
     {
         GameObject acidPuddle;
         attackDir = attackDir.normalized;
