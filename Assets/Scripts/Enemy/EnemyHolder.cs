@@ -5,18 +5,43 @@ using UnityEngine;
 
 public class EnemyHolder : MonoBehaviour
 {
-    [SerializeField] BaseEnemyScript enemyScript;
-    [SerializeField] BaseAttack attackScript;
+    public BaseEnemyScript enemyScript;
+    public BaseAttack attackScript;
     [SerializeField] GameObject attackItem;
+    [SerializeField] EnemyHealth enemyHealth;
+    public List<EffectHolder> effects = new List<EffectHolder>(); // Array of effects currently attached to the enemy
+
+    float speed;
+    float baseSpeed;
+    float movementTime;
+    float localMovementTimer;
+
     GameObject player;
     Rigidbody2D enemyPhys;
     float cooldownTimer;
+    public int maxHealth;
     enum attackState
     {
         ready,
         cooldown,
     }
     attackState state = attackState.ready;
+
+    public float mass;            // enemy mass, which should affect knockback
+
+    public float timeOfLastEffectProcess; // last time that an effect was applied
+    public float effectProcessRate; // rate at which effects are applied
+
+    public void Awake()
+    {
+        speed = enemyScript.speed;
+        baseSpeed = enemyScript.baseSpeed;
+        timeOfLastEffectProcess = 0;
+        effectProcessRate = 1;
+        maxHealth = enemyScript.health;
+        movementTime = enemyScript.movementTime;
+        localMovementTimer = movementTime;
+    }
     private void Start()
     {
         cooldownTimer = attackScript.cooldownTime;
@@ -27,11 +52,36 @@ public class EnemyHolder : MonoBehaviour
     {
         if (player != null)
         {
-            enemyScript.enemyMovement(gameObject, enemyPhys, player);
+            localMovementTimer -= Time.deltaTime;
+            enemyScript.enemyMovement(gameObject, enemyPhys, player, movementTime, localMovementTimer);
+            if(localMovementTimer <= 0)
+            {
+                localMovementTimer = movementTime;
+            }
         }
     }
     private void Update()
     {
+        // process effect updates every "effectProcessRate" second-ish
+        if (Time.time > timeOfLastEffectProcess + effectProcessRate)
+        {
+            // this is sort of hacky, but set the current speed to base speed so we can subtract whatever the effects are later
+            speed = baseSpeed;
+
+            foreach (EffectHolder effectHolder in effects)
+            {
+                if (effectHolder.effect.damage != 0)
+                {
+                    // note: damage is negative by default, but stored as positive
+                    enemyHealth.currentHealth = enemyHealth.currentHealth - effectHolder.effect.damage;
+                }
+                if (effectHolder.effect.speed != 0)
+                {
+                    speed = speed + effectHolder.effect.speed;
+                }
+            }
+            timeOfLastEffectProcess = Time.time;
+        }
         switch (state)
         {
             case attackState.ready:
@@ -40,7 +90,7 @@ public class EnemyHolder : MonoBehaviour
                     {
                         Vector2 attackDir = player.transform.position - transform.position;
                         Vector3 originPos = transform.position;
-                        attackScript.splashAttack(attackDir, attackItem, originPos);
+                        attackScript.attack(attackDir, attackItem, originPos);
                         state = attackState.cooldown;
                     }
                     break;

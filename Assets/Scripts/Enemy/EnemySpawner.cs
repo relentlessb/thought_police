@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject LabRatEnemy;
-    [SerializeField] private GameObject LabMonkeyEnemy;
-    [SerializeField] private GameObject LabSecurityEnemy;
-    [SerializeField] private GameObject LabScientistBase;
-    private void Start()
+    [SerializeField] roomEnemyInfo roomEnemyInfo;
+    void Start()
     {
-        List<GameObject> list = new List<GameObject>()
+        GameObject playerObj = GameObject.FindWithTag("Player");
+        if(playerObj != null)
         {
-            LabRatEnemy,
-            LabMonkeyEnemy,
-            LabSecurityEnemy,
-            LabScientistBase
-        };
-        InstantiateEnemy(list);
-    }
-    void InstantiateEnemy(List<GameObject> EnemyList)
-    {
-        int randomEnemyNum = UnityEngine.Random.Range(0, EnemyList.Count);
-        Instantiate(EnemyList[randomEnemyNum],transform.parent = gameObject.transform,false);
+            Player player = playerObj.GetComponent<Player>();
+            if (!player.clearedRooms.Contains(player.currentPos))
+            {
+                foreach(Vector2 position in roomEnemyInfo.enemyPositions)
+                {
+                    int randomEnemyNumber = Random.Range(0, roomEnemyInfo.enemies.Count);
+                    GameObject newEnemy = Instantiate(roomEnemyInfo.enemies[randomEnemyNumber], position, Quaternion.identity);
+                    player.roomEnemies++;
+                }
+            }
+        }
     }
 }

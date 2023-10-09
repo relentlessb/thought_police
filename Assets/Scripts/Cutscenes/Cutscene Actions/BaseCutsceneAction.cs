@@ -13,4 +13,8 @@ public class BaseCutsceneAction : ScriptableObject
     public string[] sentences;
     //"move" Action
     public Vector3 destinationPos;
+    //"sound" Action
+    public AudioSource audioClip;
+    //"sprite" Action
+    public Sprite sprite;
 }

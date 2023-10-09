@@ -17,6 +17,8 @@ public class CutsceneDirector : MonoBehaviour
     char[] splitSentence = new char[0];
     int charArrayIndex = 0;
     int lastCharArrayIndex = -1;
+    bool inDialogue = false;
+    Actor dialogueActor = null;
 
     private void Start()
     {
@@ -30,6 +32,10 @@ public class CutsceneDirector : MonoBehaviour
     {
         foreach(Actor actorObj in actorsOnScreen)
         {
+            if (inDialogue)
+            {
+                if (dialogueActor != actorObj) { break; }
+            }
             if (actorObj.currentAction <= actorObj.actions.Count - 1)
             {
                 switch (actorObj.actions[actorObj.currentAction].type)
@@ -62,7 +68,12 @@ public class CutsceneDirector : MonoBehaviour
                             {
                                 case Actor.actionState.ready:
                                     {
+                                        inDialogue = true;
+                                        dialogueActor = actorObj;
                                         dialogueAnimator.SetBool("showDialogue", true);
+                                        actorObj.actionTimer += Time.deltaTime;
+                                        if (actorObj.actionTimer > 1)
+                                        {
                                         dialogueInsert.text = "";
                                         dialogueSentences = new Queue<string>();
                                         foreach (string sentence in actorObj.actions[actorObj.currentAction].sentences)
@@ -71,8 +82,10 @@ public class CutsceneDirector : MonoBehaviour
                                         }
                                         actorObj.state = Actor.actionState.slowText;
                                         fullSentence = dialogueSentences.Dequeue();
-                                        splitSentence = fullSentence.ToCharArray();
+                                        splitSentence = fullSentence.ToCharArray();                                        
                                         actorObj.actionTimer = 0;
+                                        }
+
                                         break;
                                     }
                                 case Actor.actionState.inProgress:
@@ -80,6 +93,7 @@ public class CutsceneDirector : MonoBehaviour
                                         if (dialogueSentences.Count <= 0 && Input.GetKeyDown(passText))
                                         {
                                             dialogueAnimator.SetBool("showDialogue", false);
+                                            inDialogue = false;
                                             actorObj.currentAction++;
                                             actorObj.state = Actor.actionState.ready;
                                         }
@@ -139,6 +153,39 @@ public class CutsceneDirector : MonoBehaviour
                                         actorObj.actionTimer -= Time.deltaTime;
                                         
                                         if (actorObj.actionTimer <= 0) { actorObj.currentAction++; actorObj.state = Actor.actionState.ready; }
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                    case "sound":
+                        {
+                            switch (actorObj.state)
+                            {
+                                case Actor.actionState.ready:
+                                    {
+                                        actorObj.actionTimer = actorObj.actions[actorObj.currentAction].audioClip.clip.length;
+                                        actorObj.state = Actor.actionState.inProgress;
+                                        break;
+                                    }
+                                case Actor.actionState.inProgress:
+                                    {
+                                        actorObj.actionTimer -= Time.deltaTime;
+
+                                        if (actorObj.actionTimer <= 0) { actorObj.currentAction++; actorObj.state = Actor.actionState.ready; }
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+                    case "sprite":
+                        {
+                            switch (actorObj.state)
+                            {
+                                case Actor.actionState.ready:
+                                    {
+                                        actorObj.GetComponent<SpriteRenderer>().sprite = actorObj.actions[actorObj.currentAction].sprite;
+                                        actorObj.currentAction++;
                                         break;
                                     }
                             }

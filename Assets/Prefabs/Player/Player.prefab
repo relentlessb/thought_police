@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 6384603725014173024}
   - component: {fileID: 1354898480965263397}
   - component: {fileID: 6386471485365841822}
+  - component: {fileID: 9121808657949688289}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -224,6 +225,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9b0c1ee0157414ba8b8de73347ee7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectSprite: {fileID: 6801480934288058648}
+  playerPhys: {fileID: 6384603725014173024}
+  weaponHolder: {fileID: 2539722673488627026, guid: 2eef2b224bbd6004a9ebee5bb16ccc51, type: 3}
+  healthManager: {fileID: 9121808657949688289}
   sceneHandler: {fileID: 2148190347929966501, guid: 248091f70c6fedb4282f52d275a67a6d, type: 3}
   doorList: []
   touchedDoor:
@@ -241,8 +246,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  doorEnterDistance: 1.5
   cameraObject: {fileID: 3799667235527351572, guid: 77085cdf887b64e4392879932699a083, type: 3}
-  doorEnterDistance: 2
+  map: {fileID: 1185870457280682269, guid: 6558b12ccb94d7c43b6a90037c2ce4f1, type: 3}
+  healthUIObj: {fileID: 9205275267934847025, guid: 4df2119bd0e7ae24baac7a8501093612, type: 3}
   startCharSwitch:
     m_PersistentCalls:
       m_Calls:
@@ -258,15 +265,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  charSprites: []
-  weapon: {fileID: 1816716132987491196, guid: c3dde9aebbb3b804dbf045229bad6b1b, type: 3}
-  map: {fileID: 1185870457280682269, guid: 6558b12ccb94d7c43b6a90037c2ce4f1, type: 3}
-  weaponAngleObject: {fileID: 5024226607108352178, guid: 929911609b8f72b429a1b662d2be3453, type: 3}
+  currentChar: 0
+  pathosSprite: {fileID: 7482667652216324306, guid: 54233c2b9f6858b4297eb8a2fead3cec, type: 3}
+  ethosSprite: {fileID: 7482667652216324306, guid: 5b07416c1cda66840bef9bec5e65e48c, type: 3}
+  logosSprite: {fileID: 7482667652216324306, guid: c14f0c92264658a40a3fcf874150b855, type: 3}
   passiveAbilitiesPathos: []
   passiveAbilitiesEthos: []
   passiveAbilitiesLogos: []
   activeHolder: {fileID: 6386471485365841822}
-  currentChar: 0
+  statusEffects: []
+  weaponEffects: []
+  canMove: 1
+  roomEnemies: 0
 --- !u!50 &6384603725014173024
 Rigidbody2D:
   serializedVersion: 4
@@ -328,3 +338,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: 8292ea4a8a2320246b80c78f45175599, type: 2}
   key: 32
+--- !u!114 &9121808657949688289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8810984187599158617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dca1e49ebd09584692207b8a5480b9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  currentHP: 0
+  maxHP: 0
