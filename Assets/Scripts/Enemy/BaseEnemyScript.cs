@@ -8,11 +8,11 @@ public class BaseEnemyScript : ScriptableObject
 {
     public new string name;
 
-    public int health;            // Enemy health
+    public int   health;          // Enemy health
     public float speed;           // Enemy speed
     public float baseSpeed;       // Enemy base speed (without modifiers)
-    public float movementTime; // Enemy runs movement script when timer runs out.
-
+    public float movementTime;    // Enemy runs movement script when timer runs out.
+    public float mass;            // Enemy mass, which should affect knockback
 
     public float standDistance;   // Distance at which enemy will preferrentially stand from player (to attack or do whatever)
     public float pursuitDistance; // Distance until which enemy will pursue player
@@ -37,14 +37,14 @@ public class BaseEnemyScript : ScriptableObject
     }
 
     // 
-    /*public virtual void applyKnockback(GameObject enemyObject, Rigidbody2D enemyPhys, GameObject player)
+    public virtual void applyKnockback(GameObject enemyObject, Rigidbody2D enemyPhys, GameObject player, BasePlayerWeapon weapon)
     {
         // grab the player position/vector in relation to enemy so we can figure out where we got hit from/where to knock back to
 
         // TODO-DEVIANT: figure out where to put knockback
         // this isn't exact, but it should be good enough to get this working for now //
-        Vector2 knockbackDirection = -(player.transform.position - enemyObject.transform.position).normalized*(player.weapon.attackEffectHolder.effect.knockback/mass));
+        Vector2 knockbackDirection = -(player.transform.position - enemyObject.transform.position).normalized*(weapon.knockbackStrength/mass);
 
         enemyPhys.MovePosition(new Vector2(enemyObject.transform.position.x, enemyObject.transform.position.y) + knockbackDirection * speed * Time.fixedDeltaTime);
-    }*/
+    }
 }
