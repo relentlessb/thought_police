@@ -14,7 +14,16 @@ public class MovementScript : MonoBehaviour
     void Start()
     {
         playerPhys = gameObject.GetComponent<Rigidbody2D>();
-        MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
+        if (Camera.main!= null)
+        {
+            cameraObject = Camera.main;
+            cameraObject.transform.parent = this.transform;
+            cameraObject.transform.localPosition = new Vector3(0, 0, -10);
+        }
+        else
+        {
+            MainCamera = Instantiate(cameraObject, transform.parent = this.transform);
+        }
     }
 
     // Update is called once per frame

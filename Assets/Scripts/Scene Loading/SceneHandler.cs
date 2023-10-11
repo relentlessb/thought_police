@@ -11,9 +11,10 @@ public class SceneHandler : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        createRandomDungeon(door, doorList, player);
+        string hubScene = "The Hub";
+        LoadNextScene(hubScene,doorList);
     }
-    void createRandomDungeon(GameObject door, List<GameObject> doorList, Player player)
+    public void createRandomDungeon(GameObject door, List<GameObject> doorList, Player player)
     {
         (int, int) startPos = (0, 0);
         List<(int,int)> randomMap = CoordinateMapGenerator.GenerateRandomMap(10,5);
@@ -39,10 +40,14 @@ public class SceneHandler : MonoBehaviour
     void LoadNextScene(string sceneName, List<GameObject> doorList)
     {
         SceneManager.LoadScene(sceneName);
-        foreach (GameObject door in doorList)
+        if (doorList.Count > 0)
         {
-            door.SetActive(false);
+            foreach (GameObject door in doorList)
+            {
+                door.SetActive(false);
+            }
         }
+
     }
     void CreateDirDoors(GameObject door, List<GameObject> doorList)
     {
@@ -64,9 +69,8 @@ public class SceneHandler : MonoBehaviour
     {
         string sceneName = sceneMap[currentPos];
         LoadNextScene(sceneName, doorList);
-        activateRoomDoors(doorDictionary, currentPos, doorList);
     }
-    void activateRoomDoors(List<((int, int), (int, int))> doorDictionary, (int, int) currentPos, List<GameObject> doorList)
+    public void activateRoomDoors(List<((int, int), (int, int))> doorDictionary, (int, int) currentPos, List<GameObject> doorList)
     {
         foreach (((int, int), (int, int)) doorConnector in doorDictionary)
         {

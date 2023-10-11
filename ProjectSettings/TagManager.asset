@@ -12,8 +12,9 @@ TagManager:
   - Projectile
   - GroundObstacle
   - RoomEnemyPos
+  - FriendlyWeapon Effect
   - FriendlyWeapon
-    Effect
+  - SceneHandler
   layers:
   - Default
   - TransparentFX
