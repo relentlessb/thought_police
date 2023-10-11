@@ -2905,6 +2905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1080881786}
   - component: {fileID: 1080881785}
+  - component: {fileID: 1080881787}
   m_Layer: 0
   m_Name: note
   m_TagString: Untagged
@@ -2979,6 +2980,98 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1080881787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080881784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b98d104465968f4aa80b244b49e79d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionKey: 101
+  interactableScript: {fileID: 11400000, guid: 1d0a4643315cd1d4a969ccab28df43bb, type: 2}
+  sceneHandler: {fileID: 2148190347929966501, guid: 248091f70c6fedb4282f52d275a67a6d, type: 3}
+  sentence: READ NOTE
+  alphaNumerImages:
+  - {fileID: -771011757, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -812253169, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -228134554, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1367253553, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -400926319, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1395882147, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 663309228, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 446754257, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1665876325, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -1550892754, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1296554493, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -1840029133, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 132042364, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 932036608, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -90305849, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 101587007, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -1005363891, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1647014246, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 870974541, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -1935154638, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1030718976, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1044465578, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1132122159, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 174925847, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1363067070, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -89563281, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -927921502, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 344008572, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 132006038, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -1020887061, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 2132651737, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -322386214, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 313709852, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 1090772527, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: -1423672588, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  - {fileID: 645398960, guid: 62e666de1782baa45bcfde7e421d29ac, type: 3}
+  alphaNumerStringKey:
+  - A
+  - B
+  - C
+  - D
+  - E
+  - F
+  - G
+  - H
+  - I
+  - J
+  - K
+  - L
+  - M
+  - N
+  - O
+  - P
+  - Q
+  - R
+  - S
+  - T
+  - U
+  - V
+  - W
+  - X
+  - Y
+  - Z
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  letter: {fileID: 6405652128604067500, guid: 58ea360b8cd42c040a9587e392ba191c, type: 3}
+  spriteVisibility: {fileID: 0}
 --- !u!1 &1109138553
 GameObject:
   m_ObjectHideFlags: 0

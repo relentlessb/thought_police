@@ -14,6 +14,16 @@ public class InteractableBase : ScriptableObject
     }
     public virtual void OnRandomDungeonInteract(SceneHandler sceneHandlerObj)
     {
-        SceneHandler sceneHandler = Instantiate(sceneHandlerObj);
+        SceneHandler sceneHandler;
+        GameObject sceneHandlerObject = GameObject.FindWithTag("SceneHandler");
+        if (sceneHandlerObject == null)
+        {
+            sceneHandler = Instantiate(sceneHandlerObj);
+        }
+        else
+        {
+            sceneHandler = sceneHandlerObject.GetComponent<SceneHandler>();
+        }
+        sceneHandler.createRandomDungeon(sceneHandler.door, sceneHandler.doorList, sceneHandler.player);
     }
 }

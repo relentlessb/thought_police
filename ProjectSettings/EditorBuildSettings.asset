@@ -116,4 +116,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Puzzles/WordScramble.unity
     guid: d30ee685ef81c414d8b5aeb6cddaa6de
+  - enabled: 1
+    path: Assets/Scenes/The Hub.unity
+    guid: 6362244c072456d47b9532b4b2fc2fc7
   m_configObjects: {}
