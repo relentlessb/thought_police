@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,8 +14,10 @@ public class BasePlayerWeapon : ScriptableObject
     public string rightClickAnimBool;
     public string speedMultiplierAnimName;
     public GameObject weaponObject;
-    [SerializeField] EffectHolder attackEffectHolder;  // this is the effect of attacks dealt by this weapon
-    [SerializeField] EffectHolder holdingEffectHolder; // this is the effect of holding the weapon (on the holder)
+    [SerializeField] public EffectHolder attackEffectHolder;  // this is the effect of attacks dealt by this weapon
+    [SerializeField] public EffectHolder holdingEffectHolder; // this is the effect of holding the weapon (on the holder)
+    [SerializeField] public float knockbackStrength;          // the knockback strength of a given weapon
+
 
     // this should be called for all weapons on pickup - it registers weapon effects on the player object
     public void onEquip(Player player)
@@ -42,4 +45,6 @@ public class BasePlayerWeapon : ScriptableObject
     public virtual void weaponRightClickEnd()
     {
     }
+
+
 }
