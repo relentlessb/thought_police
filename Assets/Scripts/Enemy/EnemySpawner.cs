@@ -5,21 +5,41 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] roomEnemyInfo roomEnemyInfo;
-    void Start()
+    GameObject playerObj;
+    Player player;
+    float spawnTimer = 0;
+    void Update()
     {
-        GameObject playerObj = GameObject.FindWithTag("Player");
-        if(playerObj != null)
+        if (player != null && spawnTimer >= .5)
         {
-            Player player = playerObj.GetComponent<Player>();
-            if (!player.clearedRooms.Contains(player.currentPos))
+            if (!player.clearedRooms.Contains(player.currentPos) && player.enemiesSpawned == false)
             {
-                foreach(Vector2 position in roomEnemyInfo.enemyPositions)
+                foreach (Vector2 position in roomEnemyInfo.enemyPositions)
                 {
                     int randomEnemyNumber = Random.Range(0, roomEnemyInfo.enemies.Count);
-                    GameObject newEnemy = Instantiate(roomEnemyInfo.enemies[randomEnemyNumber], position, Quaternion.identity);
+                    GameObject newEnemy = Instantiate(roomEnemyInfo.enemies[randomEnemyNumber], position, Quaternion.identity, transform.parent = null);
                     player.roomEnemies++;
+
                 }
+
             }
+            player.enemiesSpawned = true;
+            if (player.enemiesSpawned == true)
+            {
+                Destroy(gameObject);
+            }
+        }
+        else if (player != null)
+        {
+            if (player.enemiesSpawned == false)
+            {
+                spawnTimer += Time.deltaTime;
+            }
+        }
+        else
+        {
+            playerObj = GameObject.FindWithTag("Player");
+            player = playerObj.GetComponent<Player>();
         }
     }
 }

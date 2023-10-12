@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1816716132987491172}
   - component: {fileID: 1816716132987491170}
   - component: {fileID: -4658354879952684939}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Straight Sword
   m_TagString: FriendlyWeapon
   m_Icon: {fileID: 0}
@@ -113,8 +113,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.30465475, y: 1.5278926}
   m_EdgeRadius: 0
-  attackEffectHolder: {fileID: 0}
-  holdingEffectHolder: {fileID: 0}
 --- !u!95 &1816716132987491170
 Animator:
   serializedVersion: 5

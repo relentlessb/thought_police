@@ -16,6 +16,8 @@ MonoBehaviour:
   health: 20
   speed: 1
   baseSpeed: 1
+  movementTime: 0
+  mass: 1
   standDistance: 1.5
   pursuitDistance: 0
   pursuitDelay: 0

@@ -15,4 +15,9 @@ MonoBehaviour:
   name: Glass Scientist
   health: 25
   speed: 2
+  baseSpeed: 0
+  movementTime: 0
+  mass: 1
   standDistance: 4
+  pursuitDistance: 0
+  pursuitDelay: 0

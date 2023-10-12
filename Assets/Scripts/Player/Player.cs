@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
     public List<(int,int)> clearedRooms = new List<(int,int)> ();
     List<(int,int)> enteredRooms= new List<(int,int)> ();
     bool nextRoom = false;
+    public bool enemiesSpawned = false;
 
     //Enemy Info
     public int roomEnemies = 0;
@@ -199,13 +200,11 @@ public class Player : MonoBehaviour
         }
         if (roomEnemies == 0 && roomTimer >= 1 && !clearedRooms.Contains(currentPos))
         {
-            Debug.Log(clearedRooms.Contains(currentPos));
-            Debug.Log(currentPos);
             if (!clearedRooms.Contains(currentPos))
             {
                 clearedRooms.Add(currentPos);
             }
-            Debug.Log(clearedRooms.Contains(currentPos));
+            enemiesSpawned = false;
         }
         else if (!clearedRooms.Contains(currentPos))
             {
@@ -255,10 +254,12 @@ public class Player : MonoBehaviour
                         case "West Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2); break;
                     }
                     enteredRooms.Add(currentPos);
+                    roomTimer = 0;
                     mapObj.currentPos = currentPos;
                     mapObj.enteredRooms = enteredRooms;
                     mapObj.updateMap = true;
                     roomEnemies = 0;
+                    enemiesSpawned = false;
                     touchedDoor.Invoke(doorDictionary, sceneMap, currentPos, doorList);
                     switch (other.gameObject.name)
                     {

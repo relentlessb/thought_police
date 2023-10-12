@@ -43,8 +43,11 @@ public class BaseEnemyScript : ScriptableObject
 
         // TODO-DEVIANT: figure out where to put knockback
         // this isn't exact, but it should be good enough to get this working for now //
-        Vector2 knockbackDirection = -(player.transform.position - enemyObject.transform.position).normalized*(weapon.knockbackStrength/mass);
+        if(enemyObject!= null)
+        {
+            Vector2 knockbackDirection = -(player.transform.position - enemyObject.transform.position).normalized * (weapon.knockbackStrength / mass);
 
-        enemyPhys.MovePosition(new Vector2(enemyObject.transform.position.x, enemyObject.transform.position.y) + knockbackDirection * speed * Time.fixedDeltaTime);
+            enemyPhys.MovePosition(new Vector2(enemyObject.transform.position.x, enemyObject.transform.position.y) + knockbackDirection * speed * Time.fixedDeltaTime);
+        }
     }
 }
