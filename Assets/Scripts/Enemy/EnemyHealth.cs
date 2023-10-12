@@ -35,7 +35,7 @@ public class EnemyHealth : MonoBehaviour
         {
             sprite.color = Color.red;
             currentHealth -= collision.gameObject.GetComponentInParent<PlayerWeaponHolder>().weaponScript.attackDamage;
-            enemyHolder.enemyScript.applyKnockback(enemyHolder.thisEnemy, enemyHolder.enemyPhys, enemyHolder.player, collision.gameObject.GetComponentInParent<PlayerWeaponHolder>().weaponScript);
+            enemyHolder.enemyScript.applyKnockback(enemyHolder.thisEnemy, enemyHolder.enemyPhys, GameObject.FindWithTag("Player"), collision.gameObject.GetComponentInParent<PlayerWeaponHolder>().weaponScript, enemyHolder.enemyMovementTimer);
             canHurt= false;
             if(currentHealth <= 0)
             {

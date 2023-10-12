@@ -21,3 +21,4 @@ MonoBehaviour:
   weaponObject: {fileID: 1816716132987491196, guid: 876d7f25686a3cf498c08dff40213a3f, type: 3}
   attackEffectHolder: {fileID: 6866694865125479030, guid: e651be9b21bc3784385a77ed5d0eebbb, type: 3}
   holdingEffectHolder: {fileID: 6866694865125479030, guid: 949341e12afc6744f8f503fe3786f9fc, type: 3}
+  knockbackStrength: 12

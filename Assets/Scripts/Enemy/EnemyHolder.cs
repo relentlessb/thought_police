@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyHolder : MonoBehaviour
 {
     public BaseEnemyScript enemyScript;
+    public EnemyMovementTimer enemyMovementTimer;
     public BaseAttack attackScript;
     [SerializeField] GameObject attackItem;
     [SerializeField] EnemyHealth enemyHealth;
@@ -14,7 +15,6 @@ public class EnemyHolder : MonoBehaviour
     float speed;
     float baseSpeed;
     float movementTime;
-    float localMovementTimer;
 
     public GameObject player;
     public GameObject thisEnemy;
@@ -39,8 +39,14 @@ public class EnemyHolder : MonoBehaviour
         effectProcessRate = 1;
         maxHealth = enemyScript.health;
         movementTime = enemyScript.movementTime;
-        localMovementTimer = movementTime;
-        thisEnemy = this.gameObject;
+        enemyMovementTimer = new EnemyMovementTimer();
+        enemyMovementTimer.localMovementTimer = 0;
+
+        //make sure all enemies have mass so we don't have 0 division errors
+        if (enemyScript.mass == 0)
+        {
+            enemyScript.mass = 1;
+        }
     }
     private void Start()
     {
@@ -48,17 +54,22 @@ public class EnemyHolder : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         enemyPhys = GetComponent<Rigidbody2D>();
         enemyPhys.mass = enemyScript.mass;
+        thisEnemy = this.gameObject;
     }
     private void FixedUpdate()
     {
         if (player != null)
         {
-            localMovementTimer -= Time.deltaTime;
-            enemyScript.enemyMovement(gameObject, enemyPhys, player, movementTime, localMovementTimer);
-            if(localMovementTimer <= 0)
+            if (enemyMovementTimer.localMovementTimer > 0)
             {
-                localMovementTimer = movementTime;
+                enemyMovementTimer.localMovementTimer -= Time.deltaTime;
             }
+            else
+            {
+                enemyMovementTimer.localMovementTimer = 0;
+            }
+
+            enemyScript.enemyMovement(thisEnemy, enemyPhys, player, movementTime, enemyMovementTimer);
         }
     }
     private void Update()
