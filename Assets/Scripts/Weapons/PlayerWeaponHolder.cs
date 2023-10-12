@@ -52,4 +52,16 @@ public class PlayerWeaponHolder : MonoBehaviour
             weaponScript.weaponLeftClickEnd(weapon, weaponScript.leftClickAnimBool);
         }
     }
+
+    // get the weapon object if required
+    public EffectHolder getAttackEffect()
+    {
+        return weaponScript.attackEffectHolder;
+    }
+
+    // get holding effect
+    public EffectHolder getHoldingEffect()
+    {
+        return weaponScript.holdingEffectHolder;
+    }
 }

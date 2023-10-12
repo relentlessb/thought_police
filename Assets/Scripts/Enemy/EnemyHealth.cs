@@ -35,12 +35,17 @@ public class EnemyHealth : MonoBehaviour
         {
             sprite.color = Color.red;
             currentHealth -= collision.gameObject.GetComponentInParent<PlayerWeaponHolder>().weaponScript.attackDamage;
+            enemyHolder.enemyScript.applyKnockback(enemyHolder.thisEnemy, enemyHolder.enemyPhys, GameObject.FindWithTag("Player"), collision.gameObject.GetComponentInParent<PlayerWeaponHolder>().weaponScript, enemyHolder.enemyMovementTimer);
             canHurt= false;
             if(currentHealth <= 0)
             {
                 Player player = GameObject.FindWithTag("Player").GetComponent<Player>();
-                Debug.Log(player.roomEnemies);
-                player.OnEnemyKilled(player.roomEnemies, player.clearedRooms, player.currentPos);
+                int roomEnemies = player.roomEnemies;
+                List<(int, int)> clearedRooms = player.clearedRooms;
+                (int, int) currentPos = player.currentPos;
+                (roomEnemies, clearedRooms) = player.OnEnemyKilled(roomEnemies, clearedRooms, currentPos);
+                player.roomEnemies = roomEnemies;
+                player.clearedRooms = clearedRooms;
                 Destroy(gameObject);
             }
         }

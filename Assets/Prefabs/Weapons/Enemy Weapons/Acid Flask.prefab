@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8958774244311824391}
   - component: {fileID: 6002381910053353482}
   - component: {fileID: -6804367143723091702}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Acid Flask
   m_TagString: Projectile
   m_Icon: {fileID: 0}

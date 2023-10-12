@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6002381910053353482}
   - component: {fileID: 2253209284320762840}
   - component: {fileID: 7622261124041634920}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AcidSpill
   m_TagString: GroundObstacle
   m_Icon: {fileID: 0}

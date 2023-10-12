@@ -12,8 +12,10 @@ TagManager:
   - Projectile
   - GroundObstacle
   - RoomEnemyPos
+  - FriendlyWeapon Effect
   - FriendlyWeapon
-    Effect
+  - SceneHandler
+  - Effect
   layers:
   - Default
   - TransparentFX
@@ -22,10 +24,10 @@ TagManager:
   - Water
   - UI
   - Door
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyWeapon
+  - Friendly
+  - FriendlyWeapon
   - 
   - 
   - 

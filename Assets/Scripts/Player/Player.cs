@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
     public List<((int, int), (int, int))> doorDictionary;
     [SerializeField] UnityEvent<List<((int, int), (int, int))>, Dictionary<(int, int), string>, (int, int), List<GameObject>> touchedDoor;
     public float doorEnterDistance;
+    float roomTimer = 0;
 
     //Children Objects
     Camera MainCamera;
@@ -69,6 +72,7 @@ public class Player : MonoBehaviour
     public List<(int,int)> clearedRooms = new List<(int,int)> ();
     List<(int,int)> enteredRooms= new List<(int,int)> ();
     bool nextRoom = false;
+    public bool enemiesSpawned = false;
 
     //Enemy Info
     public int roomEnemies = 0;
@@ -194,6 +198,22 @@ public class Player : MonoBehaviour
             weapon.attackSpeed = 1 + currentStats["Speed"] / 4;
             passiveNum = passiveAbilities[0].Count + passiveAbilities[1].Count + passiveAbilities[2].Count;
         }
+        if (roomEnemies == 0 && roomTimer >= 1 && !clearedRooms.Contains(currentPos))
+        {
+            if (!clearedRooms.Contains(currentPos))
+            {
+                clearedRooms.Add(currentPos);
+            }
+            enemiesSpawned = false;
+        }
+        else if (!clearedRooms.Contains(currentPos))
+            {
+                roomTimer += Time.deltaTime;
+            }
+        else
+        {
+            sceneHandler.activateRoomDoors(doorDictionary, currentPos, doorList);
+        }
     }
     //Collision Detection
     void OnTriggerEnter2D(UnityEngine.Collider2D other)
@@ -234,10 +254,12 @@ public class Player : MonoBehaviour
                         case "West Door": currentPos = (currentPos.Item1 - 1, currentPos.Item2); break;
                     }
                     enteredRooms.Add(currentPos);
+                    roomTimer = 0;
                     mapObj.currentPos = currentPos;
                     mapObj.enteredRooms = enteredRooms;
                     mapObj.updateMap = true;
                     roomEnemies = 0;
+                    enemiesSpawned = false;
                     touchedDoor.Invoke(doorDictionary, sceneMap, currentPos, doorList);
                     switch (other.gameObject.name)
                     {
@@ -344,12 +366,13 @@ public class Player : MonoBehaviour
     }
 
     //Enemy Methods
-    public void OnEnemyKilled(int roomEnemies, List<(int, int)> clearedRooms, (int, int) currentPos)
+    public (int, List<(int,int)>) OnEnemyKilled(int roomEnemies, List<(int, int)> clearedRooms, (int, int) currentPos)
     {
-        roomEnemies = roomEnemies--;
-        if(roomEnemies == 0)
+        roomEnemies--;
+        if (roomEnemies == 0)
         {
             clearedRooms.Add(currentPos);
         }
+        return (roomEnemies, clearedRooms);
     }
 }

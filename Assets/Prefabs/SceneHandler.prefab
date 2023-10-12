@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2148190347929966501}
   m_Layer: 0
   m_Name: SceneHandler
-  m_TagString: Untagged
+  m_TagString: SceneHandler
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,5 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   doorList: []
   door: {fileID: 1213670704514583635, guid: ddaa64c6bb707714fbe7167b5d07c44b, type: 3}
-  characterHandler: {fileID: 3814835662910060153, guid: d0ce1329c4c95244dbccdc83d9d7f168, type: 3}
   player: {fileID: 8639061536495383458, guid: 349a4752d189ea544bb74c09d7dcfc4b, type: 3}

@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: -8198343147274856138}
   - component: {fileID: 4221212557231455540}
   - component: {fileID: 3671806728534623760}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GlassScientist
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,14 @@ MonoBehaviour:
   enemyScript: {fileID: 11400000, guid: 36793e5031af5b041811c046efc716be, type: 2}
   attackScript: {fileID: 11400000, guid: 7ff8a173a1833364c92156f5170e24e6, type: 2}
   attackItem: {fileID: 6500349899744611651, guid: bc75f2df7ddf9a240b9026b3b7791b1d, type: 3}
+  enemyHealth: {fileID: 0}
+  effects: []
+  player: {fileID: 0}
+  thisEnemy: {fileID: 0}
+  enemyPhys: {fileID: 0}
   maxHealth: 25
+  timeOfLastEffectProcess: 0
+  effectProcessRate: 0
 --- !u!50 &-8198343147274856138
 Rigidbody2D:
   serializedVersion: 4
@@ -112,7 +119,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6916048810688601418}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -165,3 +172,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyHolder: {fileID: 6100273783186187245}
   sprite: {fileID: 6130262332646533113}
+  currentHealth: 0
+  maxHealth: 0
