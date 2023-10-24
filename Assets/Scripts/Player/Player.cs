@@ -126,6 +126,7 @@ public class Player : MonoBehaviour
             { "Speed", 5}
         };
         charStats.Add(pathosStats); charStats.Add(ethosStats); charStats.Add(logosStats);
+        charStatsBase = charStats;
         currentStats = charStats[startingCharacter];
         currentChar = startingCharacter;
 
@@ -164,7 +165,7 @@ public class Player : MonoBehaviour
         //Movement Script
         if (canMove)
         {
-            Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * currentStats["Wit"]), (Input.GetAxis("Vertical") * currentStats["Wit"]));
+            Vector2 playerMovement = new Vector2((Input.GetAxis("Horizontal") * currentStats["Speed"]), (Input.GetAxis("Vertical") * currentStats["Speed"]));
             playerPhys.velocity = playerMovement;
         }
         //New Room Calls
