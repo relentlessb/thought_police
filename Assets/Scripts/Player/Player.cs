@@ -43,11 +43,13 @@ public class Player : MonoBehaviour
     Canvas healthUI;
 
     //Character Switching
-    public List<Dictionary<string, float>> charStatsBase;
     public int currentChar = 0;
     public Sprite pathosSprite;
     public Sprite ethosSprite;
     public Sprite logosSprite;
+    Dictionary<string, float> pathosStats;
+    Dictionary<string, float> ethosStats;
+    Dictionary<string, float> logosStats;
     List<Dictionary<string, float>> charStats = new List<Dictionary<string, float>>();
     List<Sprite> charSprites = new List<Sprite>();
 
@@ -61,8 +63,8 @@ public class Player : MonoBehaviour
 
     //Player Effects
     // player active effect variables
-    public List<BaseEffect> statusEffects = new List<BaseEffect>();  // Array of status effects currently attached to the player
-    public List<BaseEffect> weaponEffects = new List<BaseEffect>();  // Array of weapon effects currently attached to the player
+    public List<EffectPacket> statusEffects = new List<EffectPacket>();  // Array of status effects and their elapsed times currently attached to the player
+    public List<EffectPacket> weaponEffects = new List<EffectPacket>();  // Array of weapon effects and their elapsed times currently attached to the player
     bool effectsChanged = false;
 
     //Player Statuses
@@ -86,7 +88,7 @@ public class Player : MonoBehaviour
         MainCamera = Camera.main;
 
         //Load Saved Stats
-        Dictionary<string, float> pathosStats = new Dictionary<string, float>()
+        pathosStats = new Dictionary<string, float>()
         {
             { "Determination", 3 },
             { "Confidence", 4},
@@ -99,7 +101,7 @@ public class Player : MonoBehaviour
             { "Offset Y", 0 },
             { "Speed", 1 }
         };
-        Dictionary<string, float> ethosStats = new Dictionary<string, float>()
+        ethosStats = new Dictionary<string, float>()
         {
             { "Determination", 2 },
             { "Confidence", 8 },
@@ -112,7 +114,7 @@ public class Player : MonoBehaviour
             { "Offset Y", 0},
             { "Speed", 3}
         };
-        Dictionary<string, float> logosStats = new Dictionary<string, float>()
+        logosStats = new Dictionary<string, float>()
         {
             { "Determination", 2 },
             { "Confidence", 3 },
@@ -125,8 +127,7 @@ public class Player : MonoBehaviour
             { "Offset Y", 4},
             { "Speed", 5}
         };
-        charStats.Add(pathosStats); charStats.Add(ethosStats); charStats.Add(logosStats);
-        charStatsBase = charStats;
+        charStats.Add(new Dictionary<string, float>(pathosStats)); charStats.Add(new Dictionary<string, float>(ethosStats)); charStats.Add(new Dictionary<string, float>(logosStats));
         currentStats = charStats[startingCharacter];
         currentChar = startingCharacter;
 
@@ -180,6 +181,10 @@ public class Player : MonoBehaviour
                 nextRoom= false;
             }
         }
+
+        // Update status effects
+        updateStatus(Time.deltaTime);
+
         //Character Swap Code
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -193,7 +198,7 @@ public class Player : MonoBehaviour
         }
         if ( (passiveAbilities[0].Count+passiveAbilities[1].Count+passiveAbilities[2].Count != passiveNum) || (effectsChanged == true) )
         {
-            recalculateStats(charStatsBase, passiveAbilities, charStats);
+            charStats = recalculateStats();
             currentStats = charStats[currentChar];
             healthManager.maxHP = currentStats["Determination"] * 20;
             weapon.attackSpeed = 1 + currentStats["Speed"] / 4;
@@ -284,55 +289,61 @@ public class Player : MonoBehaviour
     }
 
     // recalculates stats for all characters on the fly
-    public void recalculateStats(List<Dictionary<string, float>> charStatsBase, List<List<BaseAbility>> passiveAbilities, List<Dictionary<string, float>> charStats)
+    // note: you can't pass in the globals for this because you shadow the global copy
+    public List<Dictionary<string, float>> recalculateStats()
     {
-        UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: START");
+        List<Dictionary<string, float>> newCharStats = new List<Dictionary<string, float>>();
+        UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: START");;
         // loop through all 3 players
         for (int i = 0; i <= 2; i++)
         {
             // grab the base stats
-            charStats = charStatsBase;
+            newCharStats.Add(new Dictionary<string, float>(pathosStats)); 
+            newCharStats.Add(new Dictionary<string, float>(ethosStats)); 
+            newCharStats.Add(new Dictionary<string, float>(logosStats));
 
             // for each stat, cycle through all passive abilities, active effects, and weapon effects
             foreach (string statName in charStats[i].Keys.ToList())
             {
-                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before active: " + statName + ": " + charStats[i][statName]);
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before active: " + statName + ": " + newCharStats[i][statName]);
                 // apply active abilities
                 foreach (BaseAbility ability in passiveAbilities[i])
                 {
-                    charStats[i][statName] += ability.statChange[statName];
+                    newCharStats[i][statName] += ability.statChange[statName];
                 }
-                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before status: " + statName + ": " + charStats[i][statName]);
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before status: " + statName + ": " + newCharStats[i][statName]);
                 // apply status effects
-                foreach (BaseEffect baseEffect in statusEffects)
+                foreach (EffectPacket effectPacket in statusEffects)
                 {
-                    charStats[i][statName] += baseEffect.statChange[statName];
+                    newCharStats[i][statName] += effectPacket.effect.statChange[statName];
                 }
-                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before weapon: " + statName + ": " + charStats[i][statName]);
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " Before weapon: " + statName + ": " + newCharStats[i][statName]);
                 //apply weapon effects
-                foreach (BaseEffect baseEffect in weaponEffects)
+                foreach (EffectPacket effectPacket in weaponEffects)
                 {
-                    charStats[i][statName] += baseEffect.statChange[statName];
+                    newCharStats[i][statName] += effectPacket.effect.statChange[statName];
                 }
-                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " After weapon: " + statName + ": " + charStats[i][statName]);
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " After weapon: " + statName + ": " + newCharStats[i][statName]);
             }
 
             // make sure stats can't go below 1 - for now?
             // this is super relevant since we could really screw things up with negative stats
             //  such as: hitting enemy heals them for negative attack, controls are reversed for negative speed
             // and with 0 we wouldn't be able to move, which is neat and maybe useful for a stun effect, but sucks for the player
-            foreach (string statName in charStats[i].Keys.ToList())
+            foreach (string statName in newCharStats[i].Keys.ToList())
             {
-                if (charStats[i][statName] <= 0)
+                if (newCharStats[i][statName] <= 0)
                 {
-                    charStats[i][statName] = 1;
+                    newCharStats[i][statName] = 1;
                 }
-                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " After zero and negative stats correction: " + statName + ": " + charStats[i][statName]);
+                UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: Char " + i.ToString() + " After zero and negative stats correction: " + statName + ": " + newCharStats[i][statName]);;
             }
         }
 
         effectsChanged = false;
         UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: END");
+
+        return newCharStats;
     }
 
     // Add a status effect to the list of effects
@@ -345,14 +356,12 @@ public class Player : MonoBehaviour
             {
                 case BaseEffect.effectType.status:
                     {
-                        statusEffects.Add(Instantiate(caller.effect));
-                        caller.listIndex = statusEffects.Count;
+                        statusEffects.Add(new EffectPacket(Instantiate(caller.effect), 0));
                         break;
                     }
                 case BaseEffect.effectType.weapon:
                     {
-                        weaponEffects.Add(Instantiate(caller.effect));
-                        caller.listIndex = weaponEffects.Count;
+                        weaponEffects.Add(new EffectPacket(Instantiate(caller.effect), 0));
                         break;
                     }
                 default:
@@ -363,6 +372,52 @@ public class Player : MonoBehaviour
             }
 
             effectsChanged = true;
+        }
+    }
+
+    // check the persistence and "on time" for each registered effect and deregister/delete stuff as it expires
+    public void updateStatus(float deltaTime)
+    {
+        UnityEngine.Debug.Log("DEBUG: Enter updateStatus, items in statusEffects: " + statusEffects.Count);
+        // run backwards through the lists of effects and remove elements that are past their expiration time with RemoveAt
+        // we need to do this, otherwise we screw up the indices when we're iterating through and miss or mistakenly delete elements
+        if (statusEffects.Count > 0)
+        {
+            for (int i = (statusEffects.Count - 1); i == 0; i--)
+            {
+                if (statusEffects[i] != null)
+                {
+                    statusEffects[i].elapsedTime += deltaTime;
+
+                    // cull the list if we have exceeded the time and mark effects as changed
+                    if (statusEffects[i].elapsedTime >= statusEffects[i].effect.effectDuration)
+                    {
+                        UnityEngine.Debug.Log("DEBUG: Removing statusEffect[" + i + "], items in statusEffects: " + statusEffects.Count);
+                        statusEffects.RemoveAt(i);
+                        UnityEngine.Debug.Log("DEBUG: Removed statusEffect[" + i + "], items in statusEffects: " + statusEffects.Count);
+                        effectsChanged = true;
+                    }
+                }
+            }
+        }
+        if (weaponEffects.Count > 0)
+        {
+            for (int i = (weaponEffects.Count - 1); i == 0; i--)
+            {
+                if (weaponEffects[i] != null)
+                {
+                    weaponEffects[i].elapsedTime += deltaTime;
+
+                    // cull the list if we have exceeded the time and mark effects as changed
+                    if (weaponEffects[i].elapsedTime >= weaponEffects[i].effect.effectDuration)
+                    {
+                        UnityEngine.Debug.Log("DEBUG: Removing weaponEffect[" + i + "], items in weaponEffects: " + weaponEffects.Count);
+                        weaponEffects.RemoveAt(i);
+                        UnityEngine.Debug.Log("DEBUG: Removed weaponEffect[" + i + "], items in weaponEffects: " + weaponEffects.Count);
+                        effectsChanged = true;
+                    }
+                }
+            }
         }
     }
 
