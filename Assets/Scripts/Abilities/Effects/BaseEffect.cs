@@ -19,6 +19,8 @@ public class BaseEffect : ScriptableObject
     public float offsetY;
     public float speed;
 
+    public int healthChange;      // change to health over effectDuration - numerical if healthChangeIsPercentage is false
+    public bool healthChangeIsPercentage; // determines whether health change is numerical (false) or percentage of total health (true)
     public float effectDuration;  // this is the duration of the effect (when it expires)
     public float hitPercentage;   // this is the percentage (as 0-1.0) likelihood that the effect will proc
     public bool isPersistent;     // for effects that persist (such as weapon effects), setting this to true prevents destruction of the effect

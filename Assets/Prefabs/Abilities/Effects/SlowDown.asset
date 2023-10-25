@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Slowdown
   desc: Slow down affected entity
-  type: Effect
   determination: 0
   confidence: 0
   wit: 0
@@ -25,6 +24,9 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   speed: -10
+  healthChange: 0
+  healthChangeIsPercentage: 0
   effectDuration: 0
   hitPercentage: 0
   isPersistent: 1
+  type: 0

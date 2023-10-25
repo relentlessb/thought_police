@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: DOT
   desc: Apply damage over time
-  type: Effect
   determination: 0
   confidence: 0
   wit: 0
@@ -25,6 +24,9 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   speed: 0
+  healthChange: 5
+  healthChangeIsPercentage: 1
   effectDuration: 10
   hitPercentage: 1
   isPersistent: 0
+  type: 0
