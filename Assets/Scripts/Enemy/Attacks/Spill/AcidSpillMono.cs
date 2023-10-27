@@ -36,7 +36,7 @@ public class AcidSpillMono : MonoBehaviour
         if (collision.gameObject.tag == "Player" && hurtPlayer)
         {
             
-            collision.gameObject.GetComponent<HealthManager>().currentHP -= damage;
+            collision.gameObject.GetComponent<HealthManager>().UpdateHealth(-damage);
             collision.gameObject.GetComponent<HealthManager>().SetHealthBar();
         }
     }

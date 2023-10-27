@@ -18,12 +18,14 @@ public class SyringeMono : MonoBehaviour
         // Siphons HP from player
         if (collision.gameObject.CompareTag("Player"))
         {
-            siphonAmount = gameObject.GetComponent<HealthManager>().currentHP * 0.1f;
+            siphonAmount = collision.gameObject.GetComponent<HealthManager>().currentHP * 0.1f;
+            collision.gameObject.GetComponent<HealthManager>().UpdateHealth(-siphonAmount);
             syringeAmount += siphonAmount;
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
-            gameObject.GetComponent<HealthManager>().currentHP += syringeAmount;
+            gameObject.GetComponent<HealthManager>().UpdateHealth(syringeAmount);
+            syringeAmount = 0;
         }
     }
 }
