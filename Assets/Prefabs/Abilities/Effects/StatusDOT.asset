@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e83d1c8df7a3e444a0bd76f5fd0f0e3, type: 3}
-  m_Name: DOT
+  m_Name: StatusDOT
   m_EditorClassIdentifier: 
   name: DOT
   desc: Apply damage over time
@@ -24,7 +24,7 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   speed: 0
-  healthChange: 5
+  healthChange: 15
   healthChangeIsPercentage: 1
   effectDuration: 10
   hitPercentage: 1

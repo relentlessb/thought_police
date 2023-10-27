@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
     public List<EffectPacket> statusEffects = new List<EffectPacket>();  // Array of status effects and their elapsed times currently attached to the player
     public List<EffectPacket> weaponEffects = new List<EffectPacket>();  // Array of weapon effects and their elapsed times currently attached to the player
     bool effectsChanged = false;
+    float processEffectsTimer = 0;
 
     //Player Statuses
     public bool canMove = true;
@@ -99,7 +100,7 @@ public class Player : MonoBehaviour
             { "Size", 1 },
             { "Offset X", 0 },
             { "Offset Y", 0 },
-            { "Speed", 1 }
+            { "Speed", 3 }
         };
         ethosStats = new Dictionary<string, float>()
         {
@@ -112,7 +113,7 @@ public class Player : MonoBehaviour
             { "Size", 1},
             { "Offset X", 0},
             { "Offset Y", 0},
-            { "Speed", 3}
+            { "Speed", 5}
         };
         logosStats = new Dictionary<string, float>()
         {
@@ -125,7 +126,7 @@ public class Player : MonoBehaviour
             { "Size", 1 },
             { "Offset X", 4},
             { "Offset Y", 4},
-            { "Speed", 5}
+            { "Speed", 6}
         };
         charStats.Add(new Dictionary<string, float>(pathosStats)); charStats.Add(new Dictionary<string, float>(ethosStats)); charStats.Add(new Dictionary<string, float>(logosStats));
         currentStats = charStats[startingCharacter];
@@ -184,6 +185,8 @@ public class Player : MonoBehaviour
 
         // Update status effects
         updateStatus(Time.deltaTime);
+        healthManager.UpdateHealth(-processHealthEffects(Time.deltaTime));
+        healthManager.SetHealthBar();
 
         //Character Swap Code
         if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -293,7 +296,7 @@ public class Player : MonoBehaviour
     public List<Dictionary<string, float>> recalculateStats()
     {
         List<Dictionary<string, float>> newCharStats = new List<Dictionary<string, float>>();
-        UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: START");;
+        UnityEngine.Debug.Log("PLAYER-RECALCULATESTATS: START");
         // loop through all 3 players
         for (int i = 0; i <= 2; i++)
         {
@@ -383,42 +386,101 @@ public class Player : MonoBehaviour
         // we need to do this, otherwise we screw up the indices when we're iterating through and miss or mistakenly delete elements
         if (statusEffects.Count > 0)
         {
-            for (int i = (statusEffects.Count - 1); i == 0; i--)
+            for (int i = (statusEffects.Count - 1); i >= 0; i--)
             {
                 if (statusEffects[i] != null)
                 {
                     statusEffects[i].elapsedTime += deltaTime;
 
                     // cull the list if we have exceeded the time and mark effects as changed
-                    if (statusEffects[i].elapsedTime >= statusEffects[i].effect.effectDuration)
+                    if (statusEffects[i].effect.isPersistent == false)
                     {
-                        UnityEngine.Debug.Log("DEBUG: Removing statusEffect[" + i + "], items in statusEffects: " + statusEffects.Count);
-                        statusEffects.RemoveAt(i);
-                        UnityEngine.Debug.Log("DEBUG: Removed statusEffect[" + i + "], items in statusEffects: " + statusEffects.Count);
-                        effectsChanged = true;
+                        if (statusEffects[i].elapsedTime >= statusEffects[i].effect.effectDuration)
+                        {
+                            UnityEngine.Debug.Log("DEBUG: Removing statusEffect[" + i + "], items in statusEffects: " + statusEffects.Count);
+                            statusEffects.RemoveAt(i);
+                            UnityEngine.Debug.Log("DEBUG: Removed statusEffect[" + i + "], items in statusEffects: " + statusEffects.Count);
+                            effectsChanged = true;
+                        }
                     }
                 }
             }
         }
+        UnityEngine.Debug.Log("DEBUG: Enter updateStatus, items in weaponEffects: " + weaponEffects.Count);
         if (weaponEffects.Count > 0)
         {
-            for (int i = (weaponEffects.Count - 1); i == 0; i--)
+            for (int i = (weaponEffects.Count - 1); i >= 0; i--)
             {
                 if (weaponEffects[i] != null)
                 {
                     weaponEffects[i].elapsedTime += deltaTime;
 
                     // cull the list if we have exceeded the time and mark effects as changed
-                    if (weaponEffects[i].elapsedTime >= weaponEffects[i].effect.effectDuration)
+                    if (weaponEffects[i].effect.isPersistent == false)
                     {
-                        UnityEngine.Debug.Log("DEBUG: Removing weaponEffect[" + i + "], items in weaponEffects: " + weaponEffects.Count);
-                        weaponEffects.RemoveAt(i);
-                        UnityEngine.Debug.Log("DEBUG: Removed weaponEffect[" + i + "], items in weaponEffects: " + weaponEffects.Count);
-                        effectsChanged = true;
+                        if (weaponEffects[i].elapsedTime >= weaponEffects[i].effect.effectDuration)
+                        {
+                            UnityEngine.Debug.Log("DEBUG: Removing weaponEffect[" + i + "], items in weaponEffects: " + weaponEffects.Count);
+                            weaponEffects.RemoveAt(i);
+                            UnityEngine.Debug.Log("DEBUG: Removed weaponEffect[" + i + "], items in weaponEffects: " + weaponEffects.Count);
+                            effectsChanged = true;
+                        }
                     }
                 }
             }
         }
+    }
+
+    // calculate and return any health-related effects that happen once per second
+    public float processHealthEffects(float deltaTime)
+    {
+        float damagePerSecondToApply = 0;
+
+        processEffectsTimer += deltaTime;
+
+        if (processEffectsTimer >= 1)
+        {
+            UnityEngine.Debug.Log("DEBUG: Enter processHealthEffects");
+
+            // reset the timer
+            processEffectsTimer = 0;
+
+            // apply status effects
+            foreach (EffectPacket effectPacket in statusEffects)
+            {
+                float tempDamageCalculation = (float) effectPacket.effect.healthChange;
+                UnityEngine.Debug.Log("PLAYER-processHealthEffects status: " + (float)effectPacket.effect.healthChange);
+
+                // if we're working with a percent-based damage/heal, convert the health change into a percentage
+                if (effectPacket.effect.healthChangeIsPercentage == true)
+                {
+                    tempDamageCalculation = tempDamageCalculation/100 * healthManager.maxHP;
+                }
+
+                // calculate the damage or healing per second for the status effect in the current loop
+                damagePerSecondToApply += tempDamageCalculation / effectPacket.effect.effectDuration;
+            }
+            UnityEngine.Debug.Log("PLAYER-processHealthEffects: Done with status");
+            //apply weapon effects
+            foreach (EffectPacket effectPacket in weaponEffects)
+            {
+                float tempDamageCalculation = (float) effectPacket.effect.healthChange;
+                UnityEngine.Debug.Log("PLAYER-processHealthEffects weapon: " + (float)effectPacket.effect.healthChange);
+
+                // if we're working with a percent-based damage/heal, convert the health change into a percentage
+                if (effectPacket.effect.healthChangeIsPercentage == true)
+                {
+                    tempDamageCalculation = tempDamageCalculation / 100 * healthManager.maxHP;
+                }
+
+                // calculate the damage or healing per second for the status effect in the current loop
+                damagePerSecondToApply += tempDamageCalculation / effectPacket.effect.effectDuration;
+            }
+            UnityEngine.Debug.Log("PLAYER-processHealthEffects: Done with weapon");
+            UnityEngine.Debug.Log("PLAYER-processHealthEffects: Health change this iteration: " + damagePerSecondToApply);
+        }
+
+        return damagePerSecondToApply;
     }
 
     //Enemy Methods

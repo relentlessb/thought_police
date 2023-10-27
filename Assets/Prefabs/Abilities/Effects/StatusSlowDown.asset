@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e83d1c8df7a3e444a0bd76f5fd0f0e3, type: 3}
+  m_Name: StatusSlowDown
+  m_EditorClassIdentifier: 
+  name: Slowdown
+  desc: Slow down affected entity
+  determination: 0
+  confidence: 0
+  wit: 0
+  morale: 0
+  focus: 0
+  damage: 0
+  size: 0
+  offsetX: 0
+  offsetY: 0
+  speed: -10
+  healthChange: 0
+  healthChangeIsPercentage: 0
+  effectDuration: 0
+  hitPercentage: 0
+  isPersistent: 1
+  type: 0

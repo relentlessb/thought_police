@@ -15,6 +15,20 @@ public class HealthManager : MonoBehaviour
         healthBar.fillAmount = currentHP / maxHP;
     }
 
+    public void UpdateHealth(float healthChange)
+    {
+        currentHP += healthChange;
+
+        if (currentHP > maxHP)
+        {
+            currentHP = maxHP;
+        }
+        else if (currentHP < 0) 
+        { 
+            currentHP = 0;
+        }
+    }
+
     // Updates health bar value to correspond to player's health
     public void SetHealthBar()
     {
