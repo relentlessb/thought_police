@@ -9,8 +9,9 @@ public class EnemyHolder : MonoBehaviour
     public EnemyMovementTimer enemyMovementTimer;
     public BaseAttack attackScript;
     [SerializeField] GameObject attackItem;
-    [SerializeField] EnemyHealth enemyHealth;
-    public List<EffectHolder> effects = new List<EffectHolder>(); // Array of effects currently attached to the enemy
+    EnemyHealth enemyHealth;
+    [SerializeField] EffectHolder attackEffect;
+    public List<EffectPacket> statusEffects = new List<EffectPacket>(); // Array of effects currently attached to the enemy
 
     float speed;
     float baseSpeed;
@@ -21,6 +22,8 @@ public class EnemyHolder : MonoBehaviour
     public Rigidbody2D enemyPhys;
     float cooldownTimer;
     public int maxHealth;
+    private bool effectsChanged;
+
     enum attackState
     {
         ready,
@@ -28,15 +31,13 @@ public class EnemyHolder : MonoBehaviour
     }
     attackState state = attackState.ready;
 
-    public float timeOfLastEffectProcess; // last time that an effect was applied
-    public float effectProcessRate; // rate at which effects are applied
+    public float processEffectsTimer; // timer for processing status effects
 
     public void Awake()
     {
         speed = enemyScript.speed;
         baseSpeed = enemyScript.baseSpeed;
-        timeOfLastEffectProcess = 0;
-        effectProcessRate = 1;
+        processEffectsTimer = 0.0f;
         maxHealth = enemyScript.health;
         movementTime = enemyScript.movementTime;
         enemyMovementTimer = new EnemyMovementTimer();
@@ -54,6 +55,7 @@ public class EnemyHolder : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         enemyPhys = GetComponent<Rigidbody2D>();
         enemyPhys.mass = enemyScript.mass;
+        enemyHealth = GetComponent<EnemyHealth>(); // the EnemyHealth class for this enemy
         thisEnemy = this.gameObject;
     }
     private void FixedUpdate()
@@ -74,26 +76,9 @@ public class EnemyHolder : MonoBehaviour
     }
     private void Update()
     {
-        // process effect updates every "effectProcessRate" seconds-ish
-        if (Time.time > timeOfLastEffectProcess + effectProcessRate)
-        {
-            // this is sort of hacky, but set the current speed to base speed so we can subtract whatever the effects are later
-            speed = baseSpeed;
+        // process effect updates every 1-ish seconds
+        enemyHealth.updateHealth(-processHealthEffects(Time.deltaTime));
 
-            foreach (EffectHolder effectHolder in effects)
-            {
-                if (effectHolder.effect.damage != 0)
-                {
-                    // note: damage is negative by default, but stored as positive
-                    enemyHealth.currentHealth = enemyHealth.currentHealth - effectHolder.effect.damage;
-                }
-                if (effectHolder.effect.speed != 0)
-                {
-                    speed = speed + effectHolder.effect.speed;
-                }
-            }
-            timeOfLastEffectProcess = Time.time;
-        }
         switch (state)
         {
             case attackState.ready:
@@ -118,5 +103,58 @@ public class EnemyHolder : MonoBehaviour
                 break;
                 }
         }
+    }
+
+    // Add a status effect to the list of effects
+    public void registerStatus(EffectHolder caller)
+    {
+        // make sure we don't crash the game if we accidentally pass in nothing
+        if (caller != null)
+        {
+            statusEffects.Add(new EffectPacket(Instantiate(caller.effect), 0));
+
+            effectsChanged = true;
+        }
+    }
+
+    // calculate and return any health-related effects that happen once per second
+    public float processHealthEffects(float deltaTime)
+    {
+        float damagePerSecondToApply = 0;
+
+        processEffectsTimer += deltaTime;
+
+        if (processEffectsTimer >= 1)
+        {
+            UnityEngine.Debug.Log("ENEMYHOLDER: Enter processHealthEffects");
+
+            // reset the timer
+            processEffectsTimer = 0;
+
+            // apply status effects
+            foreach (EffectPacket effectPacket in statusEffects)
+            {
+                // make sure the effect is time-based
+                if (effectPacket.effect.effectDuration > 0)
+                {
+                    float tempDamageCalculation = (float)effectPacket.effect.healthChange;
+                    UnityEngine.Debug.Log("ENEMYHOLDER-processHealthEffects status: " + (float)effectPacket.effect.healthChange);
+
+                    // if we're working with a percent-based damage/heal, convert the health change into a percentage
+                    if (effectPacket.effect.healthChangeIsPercentage == true)
+                    {
+                        tempDamageCalculation = tempDamageCalculation / 100 * (float)enemyHealth.maxHealth;
+                    }
+
+                    // calculate the damage or healing per second for the status effect in the current loop
+                    damagePerSecondToApply += tempDamageCalculation / effectPacket.effect.effectDuration;
+                }
+            }
+            UnityEngine.Debug.Log("ENEMYHOLDER-processHealthEffects: Done with status");
+
+            UnityEngine.Debug.Log("ENEMYHOLDER-processHealthEffects: Health change this iteration: " + damagePerSecondToApply);
+        }
+
+        return damagePerSecondToApply;
     }
 }

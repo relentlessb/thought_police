@@ -24,9 +24,9 @@ MonoBehaviour:
   offsetX: 0
   offsetY: 0
   speed: 0
-  healthChange: 15
+  healthChange: 10
   healthChangeIsPercentage: 1
   effectDuration: 10
-  hitPercentage: 1
+  hitPercentage: 10
   isPersistent: 0
   type: 0

@@ -455,7 +455,7 @@ public class Player : MonoBehaviour
                     UnityEngine.Debug.Log("PLAYER-processHealthEffects status: " + (float)effectPacket.effect.healthChange);
 
                     // if we're working with a percent-based damage/heal, convert the health change into a percentage
-                    if ((effectPacket.effect.healthChangeIsPercentage == true))
+                    if (effectPacket.effect.healthChangeIsPercentage == true)
                     {
                         tempDamageCalculation = tempDamageCalculation / 100 * healthManager.maxHP;
                     }
@@ -475,7 +475,7 @@ public class Player : MonoBehaviour
                     UnityEngine.Debug.Log("PLAYER-processHealthEffects weapon: " + (float)effectPacket.effect.healthChange);
 
                     // if we're working with a percent-based damage/heal, convert the health change into a percentage
-                    if ((effectPacket.effect.healthChangeIsPercentage == true) && (tempDamageCalculation > 0) && (effectPacket.effect.effectDuration > 0))
+                    if (effectPacket.effect.healthChangeIsPercentage == true)
                     {
                         tempDamageCalculation = tempDamageCalculation / 100 * healthManager.maxHP;
                     }
