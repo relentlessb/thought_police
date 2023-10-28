@@ -448,33 +448,41 @@ public class Player : MonoBehaviour
             // apply status effects
             foreach (EffectPacket effectPacket in statusEffects)
             {
-                float tempDamageCalculation = (float) effectPacket.effect.healthChange;
-                UnityEngine.Debug.Log("PLAYER-processHealthEffects status: " + (float)effectPacket.effect.healthChange);
-
-                // if we're working with a percent-based damage/heal, convert the health change into a percentage
-                if (effectPacket.effect.healthChangeIsPercentage == true)
+                // make sure the effect is time-based
+                if (effectPacket.effect.effectDuration > 0)
                 {
-                    tempDamageCalculation = tempDamageCalculation/100 * healthManager.maxHP;
-                }
+                    float tempDamageCalculation = (float)effectPacket.effect.healthChange;
+                    UnityEngine.Debug.Log("PLAYER-processHealthEffects status: " + (float)effectPacket.effect.healthChange);
 
-                // calculate the damage or healing per second for the status effect in the current loop
-                damagePerSecondToApply += tempDamageCalculation / effectPacket.effect.effectDuration;
+                    // if we're working with a percent-based damage/heal, convert the health change into a percentage
+                    if ((effectPacket.effect.healthChangeIsPercentage == true))
+                    {
+                        tempDamageCalculation = tempDamageCalculation / 100 * healthManager.maxHP;
+                    }
+
+                    // calculate the damage or healing per second for the status effect in the current loop
+                    damagePerSecondToApply += tempDamageCalculation / effectPacket.effect.effectDuration;
+                }
             }
             UnityEngine.Debug.Log("PLAYER-processHealthEffects: Done with status");
             //apply weapon effects
             foreach (EffectPacket effectPacket in weaponEffects)
             {
-                float tempDamageCalculation = (float) effectPacket.effect.healthChange;
-                UnityEngine.Debug.Log("PLAYER-processHealthEffects weapon: " + (float)effectPacket.effect.healthChange);
-
-                // if we're working with a percent-based damage/heal, convert the health change into a percentage
-                if (effectPacket.effect.healthChangeIsPercentage == true)
+                // make sure the effect is time-based
+                if (effectPacket.effect.effectDuration > 0)
                 {
-                    tempDamageCalculation = tempDamageCalculation / 100 * healthManager.maxHP;
-                }
+                    float tempDamageCalculation = (float)effectPacket.effect.healthChange;
+                    UnityEngine.Debug.Log("PLAYER-processHealthEffects weapon: " + (float)effectPacket.effect.healthChange);
 
-                // calculate the damage or healing per second for the status effect in the current loop
-                damagePerSecondToApply += tempDamageCalculation / effectPacket.effect.effectDuration;
+                    // if we're working with a percent-based damage/heal, convert the health change into a percentage
+                    if ((effectPacket.effect.healthChangeIsPercentage == true) && (tempDamageCalculation > 0) && (effectPacket.effect.effectDuration > 0))
+                    {
+                        tempDamageCalculation = tempDamageCalculation / 100 * healthManager.maxHP;
+                    }
+
+                    // calculate the damage or healing per second for the status effect in the current loop
+                    damagePerSecondToApply += tempDamageCalculation / effectPacket.effect.effectDuration;
+                }
             }
             UnityEngine.Debug.Log("PLAYER-processHealthEffects: Done with weapon");
             UnityEngine.Debug.Log("PLAYER-processHealthEffects: Health change this iteration: " + damagePerSecondToApply);
