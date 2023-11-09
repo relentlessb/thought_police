@@ -27,6 +27,6 @@ MonoBehaviour:
   healthChange: -30
   healthChangeIsPercentage: 0
   effectDuration: 10
-  hitPercentage: 0
+  hitPercentage: 50
   isPersistent: 0
   type: 0
