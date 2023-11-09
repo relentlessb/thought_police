@@ -11,7 +11,6 @@ public class BaseEnemyScript : ScriptableObject
 
     public int   health;          // Enemy health
     public float speed;           // Enemy speed
-    public float baseSpeed;       // Enemy base speed (without modifiers)
     public float movementTime;    // Enemy runs movement script when timer runs out.
     public float mass;            // Enemy mass, which should affect knockback
 
