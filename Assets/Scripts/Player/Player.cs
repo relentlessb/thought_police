@@ -96,11 +96,11 @@ public class Player : MonoBehaviour
             { "Wit", 3},
             { "Morale", 0 },
             { "Focus", 0 },
-            { "Damage", 5 },
+            { "Damage", 7 },
             { "Size", 1 },
             { "Offset X", 0 },
             { "Offset Y", 0 },
-            { "Speed", 3 }
+            { "Speed", 6 }
         };
         ethosStats = new Dictionary<string, float>()
         {
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
             { "Size", 1},
             { "Offset X", 0},
             { "Offset Y", 0},
-            { "Speed", 5}
+            { "Speed", 6}
         };
         logosStats = new Dictionary<string, float>()
         {
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
             { "Size", 1 },
             { "Offset X", 4},
             { "Offset Y", 4},
-            { "Speed", 6}
+            { "Speed", 7}
         };
         charStats.Add(new Dictionary<string, float>(pathosStats)); charStats.Add(new Dictionary<string, float>(ethosStats)); charStats.Add(new Dictionary<string, float>(logosStats));
         currentStats = charStats[startingCharacter];
